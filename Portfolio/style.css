@@ -1,0 +1,67 @@
+/* Estilos básicos y de reseteo */
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4; /* Fondo gris claro */
+    color: #333;
+}
+
+/* HEADER y FOOTER */
+.page-header, .page-footer {
+    background-color: #333; /* Fondo oscuro */
+    color: white;
+    padding: 1rem 5%;
+    text-align: center;
+}
+
+.page-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.page-header nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+/* CONTENIDO PRINCIPAL (MAIN) */
+.main-content {
+    padding: 2rem 5%;
+    min-height: 70vh; /* Para que ocupe espacio en la pantalla */
+}
+
+/* DISPOSICIÓN DE PROYECTOS (FLEXBOX) */
+.projects-container {
+    display: flex; /* Habilita Flexbox */
+    gap: 20px; /* Espacio entre las tarjetas de proyecto */
+    justify-content: center; /* Centra los proyectos horizontalmente */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+}
+
+/* TARJETAS DE PROYECTO */
+.project-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Para que ocupen la mitad del contenedor en pantallas grandes */
+    flex: 1 1 45%;
+    max-width: 450px;
+    text-align: center;
+}
+
+.project-card h2 {
+    color: #007bff; /* Color de acento */
+}
+
+
+/* MEDIA QUERY: Para móviles, los proyectos se apilan */
+@media (max-width: 768px) {
+    .project-card {
+        /* En pantallas pequeñas, cada tarjeta ocupa el 100% del contenedor */
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
