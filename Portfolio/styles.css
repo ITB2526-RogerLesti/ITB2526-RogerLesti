@@ -302,3 +302,32 @@ nav a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* ========================================= */
+/* ESTILOS ESPECÍFICOS PARA EL VISOR DE PDF (pdf-viewer) */
+/* ========================================= */
+.pdf-viewer {
+    background-color: #112240;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.4); /* var(--shadow-glow) */
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-viewer h2 {
+    color: var(--color-accent);
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #8892B0; /* var(--color-text-dark) */
+    padding-bottom: 5px;
+}
+
+.pdf-viewer iframe {
+    flex-grow: 1;
+    width: 100%;
+    border: 1px solid #8892B0;
+    border-radius: 5px;
+    min-height: 400px;
+}
