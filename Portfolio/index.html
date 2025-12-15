@@ -1,41 +1,51 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Portafolio de Proyectos</title>
-    <link rel="stylesheet" href="styles.css"> </head>
+    <meta name="description" content="Portfoli de projectes web de Roger Lesti.">
+    <title>Inici | Roger Lesti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 <body>
 
     <header class="page-header">
-        <h1>Mi Portafolio</h1>
+        <a href="index.html" class="logo">ROGER LESTI <span style="color: var(--color-secondary);"> web </span></a>
         <nav>
-            <a href="#proyectos">Proyectos</a>
-            <a href="#contacto">Contacto</a>
+            <a href="index.html">Home</a>
+            <a href="llistat_projectes.html">Projects</a>
+            <a href="contacte.html">Contact</a>
         </nav>
     </header>
 
     <main class="main-content">
-        <div class="projects-container">
+        <h1 data-typewriter="Portfolio: PROJECTS">Featured Projects</h1>
 
-            <section class="project-card">
-                <h2>Título del Proyecto 1</h2>
-                <p>Breve descripción de este proyecto. Aquí iría una imagen o una demo.</p>
-                <a href="#">Ver Proyecto</a>
-            </section>
+        <section class="projects-container">
 
-            <section class="project-card">
-                <h2>Título del Proyecto 2</h2>
-                <p>Breve descripción de este segundo proyecto. Es importante que ambos tengan contenido similar.</p>
-                <a href="#">Ver Proyecto</a>
-            </section>
+            <article class="project-card">
+                <a href="detall_projecte_1.html">
+                    <h2>MICROORGANISMS IN OUR ENVIRONMENT</h2>
+                    <p>Work on microorganisms in the school environment and how their colony evolves in a petri dish.</p>
+                    <aside style="margin-top:10px; color: var(--color-accent); font-size:0.9em;">[Research][Biology]</aside>
+                </a>
+            </article>
 
-        </div>
+            <article class="project-card">
+                <a href="detall_projecte_1.html">
+                    <h2>Project at another time</h2>
+                    <p> Coming soon </p>
+                    <aside style="margin-top:10px; color: var(--color-accent); font-size:0.9em;">[Coming Soon]</aside>
+                </a>
+            </article>
+
+        </section>
     </main>
 
     <footer class="page-footer">
-        <p>&copy; 2025 Mi Nombre. Todos los derechos reservados.</p>
+        <p>&copy; <span id="current-year"></span> | Roger Lesti | <a href="#">GitHub</a></p>
     </footer>
 
+    <script src="main.js"></script>
 </body>
 </html>

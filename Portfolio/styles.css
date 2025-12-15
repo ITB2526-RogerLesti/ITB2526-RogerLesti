@@ -1,67 +1,304 @@
-/* Estilos básicos y de reseteo */
+/* ========================================= */
+/* 1. Estils Generals i de Reseteig (CIENTÍFIC / LABORATORY THEME) */
+/* ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+:root {
+    --color-bg: #0A192F;           /* Blau molt fosc (Dark Mode) */
+    --color-accent: #64FFDA;       /* Verd neó / Cyberpunk */
+    --color-secondary: #FFD700;    /* Accent Daurat */
+    --color-text-light: #CCD6F6;   /* Gris molt clar */
+    --color-text-dark: #8892B0;    /* Gris més fosc */
+    --font-main: 'Roboto Mono', monospace;
+    --shadow-glow: 0 0 10px rgba(100, 255, 218, 0.4);
+    --border-glow: 1px solid rgba(100, 255, 218, 0.3);
+}
+
 body {
-    font-family: sans-serif;
+    font-family: var(--font-main);
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4; /* Fondo gris claro */
-    color: #333;
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+    line-height: 1.6;
 }
 
-/* HEADER y FOOTER */
-.page-header, .page-footer {
-    background-color: #333; /* Fondo oscuro */
-    color: white;
+h1, h2, h3 {
+    color: var(--color-text-light);
+    margin-top: 0;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(100, 255, 218, 0.2); /* Efecte glow subtle */
+}
+
+/* ========================================= */
+/* 2. Capçalera i Navegació */
+/* ========================================= */
+.page-header {
+    background-color: var(--color-bg);
     padding: 1rem 5%;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: var(--border-glow);
+    transition: all 0.3s ease;
 }
 
-.page-header h1 {
-    margin-bottom: 0.5rem;
-}
-
-.page-header nav a {
-    color: white;
+.logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-accent);
     text-decoration: none;
-    margin: 0 10px;
+    text-shadow: 0 0 15px rgba(100, 255, 218, 0.6);
 }
 
-/* CONTENIDO PRINCIPAL (MAIN) */
+nav a {
+    color: var(--color-text-dark);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    margin-left: 15px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.9em;
+}
+
+nav a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+}
+
+/* ========================================= */
+/* 3. Contingut Principal (Main) */
+/* ========================================= */
 .main-content {
-    padding: 2rem 5%;
-    min-height: 70vh; /* Para que ocupe espacio en la pantalla */
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 80vh;
 }
 
-/* DISPOSICIÓN DE PROYECTOS (FLEXBOX) */
+/* 4. Estils Específics de la Pàgina Principal (Targetes) */
 .projects-container {
-    display: flex; /* Habilita Flexbox */
-    gap: 20px; /* Espacio entre las tarjetas de proyecto */
-    justify-content: center; /* Centra los proyectos horizontalmente */
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 40px;
+    margin-top: 3rem;
 }
 
-/* TARJETAS DE PROYECTO */
 .project-card {
-    background-color: white;
-    border: 1px solid #ddd;
+    background-color: #112240;
     border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Para que ocupen la mitad del contenedor en pantallas grandes */
-    flex: 1 1 45%;
-    max-width: 450px;
-    text-align: center;
+    padding: 30px;
+    box-shadow: var(--shadow-glow);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    opacity: 0; /* JS Hook */
+    transform: translateY(20px); /* JS Hook */
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.8);
+    background-color: #1a3556;
+}
+
+.project-card a {
+    text-decoration: none;
+    color: var(--color-text-dark);
+    display: block;
 }
 
 .project-card h2 {
-    color: #007bff; /* Color de acento */
+    color: var(--color-accent);
+    border-bottom: 1px dashed var(--color-text-dark);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+/* 5. Estils de la Pàgina de Llistat (Més diferenciació) */
+.project-list-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.project-list-section li {
+    background-color: #112240;
+    border-left: 5px solid var(--color-secondary);
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: var(--shadow-glow);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.project-list-section li.destacat {
+    border-left-color: var(--color-accent);
+}
+
+.project-list-section li.destacat:hover {
+    background-color: #1a3556;
+    transform: translateX(10px);
+}
+
+/* 6. Estils de la Pàgina de Detall (Layout Científic) */
+.detail-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 50px;
+    margin-bottom: 40px;
+    background-color: #112240;
+    padding: 30px;
+    border-radius: 8px;
+    border: var(--border-glow);
+}
+
+.detail-descripcio h2 {
+    border-bottom: 2px solid var(--color-secondary);
+    padding-bottom: 10px;
+}
+
+.detail-descripcio ul {
+    list-style: none;
+    padding-left: 0;
+}
+.detail-descripcio ul li:before {
+    content: ">>";
+    color: var(--color-accent);
+    margin-right: 10px;
+    font-weight: 700;
 }
 
 
-/* MEDIA QUERY: Para móviles, los proyectos se apilan */
+.detail-imatge {
+    background-color: #0A192F;
+    border: 1px solid var(--color-accent);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(100, 255, 218, 0.4), inset 0 0 10px rgba(100, 255, 218, 0.2);
+}
+
+.detail-imatge img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    filter: brightness(1.2);
+}
+
+/* PDF Link (Botó d'acció) */
+.pdf-link-section {
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+    padding: 25px;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 30px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--color-secondary);
+}
+
+.pdf-link-section:hover {
+    background-color: var(--color-bg);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+}
+
+.pdf-link-section h3 {
+    color: var(--color-bg);
+    transition: color 0.3s;
+}
+
+.pdf-link-section:hover h3 {
+    color: var(--color-accent);
+}
+
+.pdf-link-section a {
+    color: var(--color-bg);
+    font-weight: 700;
+    text-decoration: none;
+    padding: 5px 10px;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s;
+}
+
+.pdf-link-section:hover a {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    box-shadow: 0 0 5px white;
+}
+
+.btn-return {
+    background-color: var(--color-primary);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+}
+
+.btn-return:hover {
+    background-color: #00D3A3;
+    box-shadow: var(--shadow-glow);
+}
+
+/* 7. Peu de Pàgina (Footer amb Disseny) */
+.page-footer {
+    background-color: #0A192F;
+    color: var(--color-text-dark);
+    padding: 2rem 5%;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(100, 255, 218, 0.3);
+}
+
+.page-footer a {
+    color: var(--color-accent);
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.page-footer a:hover {
+    color: var(--color-secondary);
+}
+
+/* 8. Responsivitat (Mitjana i Mòbil) */
+@media (max-width: 992px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
-    .project-card {
-        /* En pantallas pequeñas, cada tarjeta ocupa el 100% del contenedor */
-        flex: 1 1 100%;
-        max-width: 100%;
+    .page-header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav {
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    nav a {
+        margin: 5px 10px;
+    }
+
+    .projects-container {
+        grid-template-columns: 1fr;
     }
 }
