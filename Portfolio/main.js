@@ -63,3 +63,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+// Crear la barra de progreso dinámicamente
+const progressBar = document.createElement('div');
+progressBar.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: var(--color-accent);
+    width: 0%;
+    z-index: 1000;
+    transition: width 0.1s ease;
+`;
+document.body.appendChild(progressBar);
+
+// Actualizar el ancho según el scroll
+window.addEventListener('scroll', () => {
+    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    progressBar.style.width = scrolled + "%";
+});
