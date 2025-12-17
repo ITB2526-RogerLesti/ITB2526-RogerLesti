@@ -209,3 +209,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initCoordinatesTracker();
     initScanReveal();
 });
+
+function initDecryptEffect() {
+    const bio = document.querySelector('.bio-text');
+    if (!bio) return;
+
+    const originalText = bio.innerText;
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+    let iterations = 0;
+
+    const interval = setInterval(() => {
+        bio.innerText = bio.innerText.split("")
+            .map((char, index) => {
+                if (index < iterations) return originalText[index];
+                return characters[Math.floor(Math.random() * characters.length)];
+            })
+            .join("");
+
+        if (iterations >= originalText.length) clearInterval(interval);
+        iterations += 1 / 3;
+    }, 30);
+}
+
+// Llama a esta función dentro de tu DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    initDecryptEffect();
+});

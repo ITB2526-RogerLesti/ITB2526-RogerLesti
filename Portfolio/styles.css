@@ -336,3 +336,48 @@ nav a:hover {
     height: 180px; /* Ajusta la altura a tu gusto */
     object-fit: cover; /* Esto hace que la imagen se recorte para llenar el espacio sin deformarse */
 }
+
+.about-me-section {
+    background: rgba(17, 34, 64, 0.5);
+    border: 1px solid var(--color-accent);
+    padding: 20px;
+    margin-bottom: 40px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.profile-header {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    font-weight: bold;
+    font-size: 0.8rem;
+    background: rgba(100, 255, 218, 0.05);
+}
+
+.status-badge {
+    color: #64ffda;
+    font-family: monospace;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    background: rgba(100, 255, 218, 0.1);
+    display: inline-block;
+    padding: 2px 8px;
+}
+
+.bio-text p {
+    margin-bottom: 10px;
+    color: #8892b0;
+    line-height: 1.6;
+}

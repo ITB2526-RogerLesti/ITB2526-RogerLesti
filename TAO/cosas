@@ -21,13 +21,77 @@
     <main class="main-content">
         <h1 data-typewriter="Welcome to my Projects">Featured Projects</h1>
 
+        <section class="projects-container">
+
+            <article class="project-card">
+                <a href="detall_projecte_1.html">
+                    <h2>MICROORGANISMS IN OUR ENVIRONMENT</h2>
+                    <p>Work on microorganisms in the school environment and how the colony evolves in a petri dish.</p>
+                    <aside style="margin-top:10px; color: var(--color-accent); font-size:0.9em;">[Research][Biology]</aside>
+
+                    <img src="micro.jpg" alt="Microorganisms Project" style="width: 100%; border-radius: 4px; margin-top: 15px; border: 1px solid var(--color-accent);">
+                </a>
+            </article>
+
+            <article class="project-card">
+                <a href="detall_projecte_2.html">
+                    <h2>Risk Prevention Project</h2>
+                    <p>Design of a prevention plan and an emergency plan for an office (real or fictitious).</p>
+                    <aside style="margin-top:10px; color: var(--color-accent); font-size:0.9em;">[Design][Office][Prevention]</aside>
+
+                    <img src="prevention.png" alt="Prevention Project" style="width: 100%; border-radius: 4px; margin-top: 15px; border: 1px solid var(--color-accent);">
+                </a>
+            </article>
+
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <p>&copy; <span id="current-year"></span> | Roger Lesti. Codi: OK. | <a href="#">GitHub</a></p>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfoli de projectes web de Roger Lesti.">
+    <title>Inici | Roger Lesti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <header class="page-header">
+        <a href="index.html" class="logo">ROGER LESTI <span style="color: var(--color-secondary);">.CYBER ADMIN</span></a>
+        <nav>
+            <a href="index.html">HOME</a>
+            <a href="llistat_projectes.html">PROJECTS</a>
+            <a href="contacte.html">CONTACT</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <h1 data-typewriter="Welcome to my Projects">Featured Projects</h1>
+
         <section class="about-me-section">
             <div class="profile-header">
                 <div class="profile-avatar">
                    <div class="avatar-placeholder">
                        <img src="tu-foto.jpg" alt="Roger Lesti" style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
-                </div> <div class="profile-info">
+                <div class="profile-info">
                     <h2>> SUBJECT: ROGER LESTI</h2>
                     <p class="status-badge">STATUS: ACTIVE / CYBER_ADMIN</p>
                     <article class="bio-text">
@@ -35,7 +99,8 @@
                         <p>This Portfolio is a collection of my most outstanding projects, combining the rigor of the scientific method with the efficiency of modern systems administration.</p>
                     </article>
                 </div>
-            </div> </section>
+            </div>
+        </section>
 
         <section class="projects-container">
 
