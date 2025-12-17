@@ -211,27 +211,37 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initDecryptEffect() {
+    // Seleccionamos el contenedor bio-text
     const bio = document.querySelector('.bio-text');
     if (!bio) return;
 
-    const originalText = bio.innerText;
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
-    let iterations = 0;
+    // IMPORTANTE: Buscamos todos los párrafos dentro para descifrarlos todos
+    const paragraphs = bio.querySelectorAll('p');
 
-    const interval = setInterval(() => {
-        bio.innerText = bio.innerText.split("")
-            .map((char, index) => {
-                if (index < iterations) return originalText[index];
-                return characters[Math.floor(Math.random() * characters.length)];
-            })
-            .join("");
+    paragraphs.forEach(p => {
+        const originalText = p.innerText;
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+        let iterations = 0;
 
-        if (iterations >= originalText.length) clearInterval(interval);
-        iterations += 1 / 3;
-    }, 30);
+        const interval = setInterval(() => {
+            p.innerText = p.innerText.split("")
+                .map((char, index) => {
+                    if (index < iterations) {
+                        return originalText[index];
+                    }
+                    return characters[Math.floor(Math.random() * characters.length)];
+                })
+                .join("");
+
+            if (iterations >= originalText.length) {
+                clearInterval(interval);
+            }
+
+            // Velocidad ultra rápida: 3 letras por ciclo
+            iterations += 3;
+        }, 20);
+    });
 }
 
-// Llama a esta función dentro de tu DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-    initDecryptEffect();
-});
+// Aseguramos que se ejecute al cargar la página
+window.addEventListener('load', initDecryptEffect);
