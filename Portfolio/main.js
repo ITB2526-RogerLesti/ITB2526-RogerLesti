@@ -245,3 +245,4 @@ function initDecryptEffect() {
 
 // Aseguramos que se ejecute al cargar la página
 window.addEventListener('load', initDecryptEffect);
+
