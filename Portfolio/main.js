@@ -128,3 +128,84 @@ function applyCyberGlitch() {
 
 // Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', applyCyberGlitch);
+
+// 1. CONTADOR DE UPTIME (TIEMPO DE SESIÓN)
+function initUptimeCounter() {
+    const uptimeElement = document.createElement('div');
+    uptimeElement.style.cssText = `
+        position: fixed;
+        top: 80px;
+        right: 20px;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        color: #64FFDA;
+        background: rgba(10, 25, 47, 0.7);
+        padding: 5px 10px;
+        border: 1px solid #64FFDA;
+        z-index: 100;
+    `;
+    document.body.appendChild(uptimeElement);
+
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        uptimeElement.textContent = `UPTIME: ${mins}m ${secs}s`;
+    }, 1000);
+}
+
+// 2. RASTREADOR DE COORDENADAS EN PROYECTOS
+function initCoordinatesTracker() {
+    const cards = document.querySelectorAll('.project-card');
+
+    cards.forEach(card => {
+        const coordDisplay = document.createElement('div');
+        coordDisplay.style.cssText = `
+            font-size: 10px;
+            color: #8892b0;
+            margin-top: 5px;
+            font-family: monospace;
+        `;
+        card.appendChild(coordDisplay);
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = Math.floor(e.clientX - rect.left);
+            const y = Math.floor(e.clientY - rect.top);
+            coordDisplay.textContent = `SCAN_POS: [X:${x} Y:${y}]`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            coordDisplay.textContent = '';
+        });
+    });
+}
+
+// 3. EFECTO DE ESCANEO AL APARECER (INTERSECTION OBSERVER)
+function initScanReveal() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+                entry.target.style.filter = "blur(0px)";
+                entry.target.style.transition = "all 0.8s ease-out";
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.project-card').forEach(card => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+        card.style.filter = "blur(5px)";
+        observer.observe(card);
+    });
+}
+
+// Iniciar todos los nuevos sistemas
+document.addEventListener('DOMContentLoaded', () => {
+    initUptimeCounter();
+    initCoordinatesTracker();
+    initScanReveal();
+});
