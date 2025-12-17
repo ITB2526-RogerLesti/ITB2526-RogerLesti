@@ -85,3 +85,46 @@ window.addEventListener('scroll', () => {
     const scrolled = (winScroll / height) * 100;
     progressBar.style.width = scrolled + "%";
 });
+
+/* ==========================================================
+   SISTEMA DE GLITCH DINÁMICO - ROGER LESTI .LAB
+   ========================================================== */
+
+function applyCyberGlitch() {
+    // Seleccionamos todas las imágenes dentro de las tarjetas de proyecto
+    const images = document.querySelectorAll('.project-card img');
+
+    if (images.length === 0) return;
+
+    // Función que ejecuta el efecto de forma impredecible
+    const glitchEvent = () => {
+        // Elegimos una imagen al azar de las disponibles
+        const target = images[Math.floor(Math.random() * images.length)];
+
+        // Guardamos el estilo original para restaurarlo
+        const originalStyle = target.style.filter;
+        const originalTransform = target.style.transform;
+
+        // --- INICIO DEL FALLO (GLITCH) ---
+        // Cambiamos el color (hue-rotate), brillo y aplicamos un desplazamiento brusco
+        target.style.filter = `hue-rotate(${Math.random() * 360}deg) brightness(1.4) contrast(1.5)`;
+        target.style.transform = `translateX(${Math.random() * 10 - 5}px) scaleY(${1 + Math.random() * 0.1})`;
+        target.style.opacity = "0.8";
+
+        // Tras 60 milisegundos, restauramos la imagen a su estado original
+        setTimeout(() => {
+            target.style.filter = originalStyle;
+            target.style.transform = originalTransform;
+            target.style.opacity = "1";
+        }, 60);
+
+        // Programamos el siguiente fallo en un tiempo aleatorio (entre 1.5 y 4 segundos)
+        setTimeout(glitchEvent, Math.random() * 2500 + 1500);
+    };
+
+    // Iniciamos el bucle
+    glitchEvent();
+}
+
+// Ejecutar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', applyCyberGlitch);
