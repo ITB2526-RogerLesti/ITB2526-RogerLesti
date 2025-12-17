@@ -331,3 +331,8 @@ nav a:hover {
     border-radius: 5px;
     min-height: 400px;
 }
+
+.project-card img {
+    height: 180px; /* Ajusta la altura a tu gusto */
+    object-fit: cover; /* Esto hace que la imagen se recorte para llenar el espacio sin deformarse */
+}
