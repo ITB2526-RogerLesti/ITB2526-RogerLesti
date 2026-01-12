@@ -246,3 +246,202 @@ function initDecryptEffect() {
 // Aseguramos que se ejecute al cargar la página
 window.addEventListener('load', initDecryptEffect);
 
+/* LISTADO COMPLETO DE PROYECTOS - CONFIGURACIÓN CYBER ADMIN */
+const projectsData = [
+    // --- 1. PROYECTOS REALES (Categorías Biology y Asix) ---
+    {
+        title: "MICROORGANISMS RESEARCH",
+        subtitle: "Biology Department",
+        category: "biology",
+        tags: ["RESEARCH", "LAB"],
+        img: "micro.jpg",
+        url: "detall_projecte_1.html",
+        active: true
+    },
+    {
+        title: "PREVENTION PLAN",
+        subtitle: "Network & Security",
+        category: "asix",
+        tags: ["SAFETY", "ASIX"],
+        img: "prevention.png",
+        url: "detall_projecte_2.html",
+        active: true
+    },
+
+    // --- 2. PROYECTOS CON IMÁGENES LOCALES (Categoría Web) ---
+    {
+        title: "Games",
+        subtitle: "Videojoc Web",
+        category: "web",
+        tags: ["JAVASCRIPT", "LOGIC"],
+        img: "games.png",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Maths",
+        subtitle: "Calculadora / UI",
+        category: "web",
+        tags: ["HTML", "CSS"],
+        img: "Maths.jpg",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Modern Landing",
+        subtitle: "Disseny Web",
+        category: "web",
+        tags: ["FIGMA", "WEB"],
+        img: "modernlearning.webp",
+        url: "#",
+        active: false
+    },
+    {
+        title: "ECO",
+        subtitle: "Data & AI",
+        category: "web",
+        tags: ["REACT", "DATA"],
+        img: "eco.jpg",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Darwin",
+        subtitle: "Evolutionary UI",
+        category: "web",
+        tags: ["SECURITY", "LINUX"],
+        img: "darwin.webp",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Proxy_Phantom",
+        subtitle: "Secure VPN Tunnel",
+        category: "web",
+        tags: ["NETWORK", "PRIVACY"],
+        img: "phantom.png",
+        url: "#",
+        active: false
+    },
+
+    // --- 3. PROYECTOS CON FOTOS AUTOMÁTICAS (Categoría Web) ---
+    {
+        title: "Youtube",
+        subtitle: "Video Content Analysis",
+        category: "web",
+        tags: ["MEDIA", "UI"],
+        img: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&q=80",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Bit Coin",
+        subtitle: "Decryption System",
+        category: "web",
+        tags: ["CRYPTO", "ALGO"],
+        img: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800&q=80",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Biology",
+        subtitle: "Microbial Scan",
+        category: "web",
+        tags: ["DNA", "LAB"],
+        img: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=800&q=80",
+        url: "#",
+        active: false
+    },
+    {
+        title: "ITB",
+        subtitle: "Institut Tecnològic Barcelona",
+        category: "web",
+        tags: ["EDUCATION", "CODE"],
+        img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&q=80",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Spain",
+        subtitle: "Geo-Location Data",
+        category: "web",
+        tags: ["REGION", "MAP"],
+        img: "spain.png",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Twitch",
+        subtitle: "Live Stream Portal",
+        category: "web",
+        tags: ["STREAM", "LIVE"],
+        img: "twitch.jpg",
+        url: "#",
+        active: false
+    },
+    {
+        title: "PC Gamer",
+        subtitle: "Hardware Setup",
+        category: "web",
+        tags: ["RGB", "GAMING"],
+        img: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80",
+        url: "#",
+        active: false
+    },
+    {
+        title: "Packet Tracer",
+        subtitle: "Network Systems",
+        category: "web",
+        tags: ["CISCO", "DATA"],
+        img: "tracer.png",
+        url: "#",
+        active: false
+    }
+];
+
+/* FUNCIÓN PARA RENDERIZAR LA GALERÍA */
+function renderGallery(filter = "tots") {
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    const filtered = projectsData.filter(p => filter === "tots" || p.category === filter);
+
+    filtered.forEach(p => {
+        const cardContent = `
+            <div class="gallery-img-container">
+                <img src="${p.img}" alt="${p.title}">
+            </div>
+            <div class="gallery-info">
+                <h3>${p.title}</h3>
+                <p class="subtitle">${p.subtitle}</p>
+                <div class="tags-container">
+                    ${p.tags.map(t => `<span class="tag-pill">${t}</span>`).join("")}
+                </div>
+                ${!p.active ? '<div class="locked-status">[SYSTEM_LOCKED]</div>' : ''}
+            </div>
+        `;
+
+        const card = document.createElement('div');
+        if (p.active) {
+            card.innerHTML = `<a href="${p.url}" class="project-gallery-card active-link">${cardContent}</a>`;
+        } else {
+            card.className = "project-gallery-card locked";
+            card.innerHTML = cardContent;
+        }
+        grid.appendChild(card);
+    });
+}
+
+/* CARGA INICIAL Y EVENTOS */
+document.addEventListener('DOMContentLoaded', () => {
+    renderGallery();
+    const btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(btn.dataset.filter);
+        });
+    });
+});

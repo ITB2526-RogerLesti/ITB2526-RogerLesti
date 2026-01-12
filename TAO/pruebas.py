@@ -19,17 +19,25 @@
    </header>
 
    <main class="main-content">
-       <h1 style="text-align: center; margin-bottom: 30px; letter-spacing: 2px;">REGISTRE PROJECTS</h1>
+       <h1>REGISTRE PROJECTS</h1>
 
-       <nav class="filter-nav">
-           <button class="filter-btn active" data-filter="tots">Tots</button>
-           <button class="filter-btn" data-filter="biology">Biology</button>
-           <button class="filter-btn" data-filter="asix">Asix</button>
-           <button class="filter-btn" data-filter="web">Web</button>
-       </nav>
+       <section class="project-list-section">
+           <ul>
+               <li class="destacat project-card">
+                   <a href="detall_projecte_1.html">
+                       <h3>1. MICROORGANISMS IN OUR ENVIRONMENT</h3>
+                       <p>Work on microorganisms in the school environment and how they evolve in a petri dish as a colony.[Access to documentation]</p>
+                   </a>
+               </li>
 
-       <div id="projects-grid" class="projects-grid-gallery">
-           </div>
+               <li class="project-card">
+                   <a href="detall_projecte_2.html">
+                       <h3>2. Prevention Project</h3>
+                       <p>Design of a prevention plan and an emergency plan for an office (real or fictitious)[Access to documentation].</p>
+                   </a>
+               </li>
+           </ul>
+       </section>
    </main>
 
    <footer class="page-footer">
