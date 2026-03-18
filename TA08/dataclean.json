@@ -1,0 +1,26 @@
+{
+  "project_info": {
+    "name": "Energy Saving Calculator ITB",
+    "phase": "1.2 - Datacleaning",
+    "team": [
+      "Roger",
+      "Walid"
+    ]
+  },
+  "environmental_data": {
+    "water_m3": 58,
+    "gas_kwh": 12836,
+    "waste_management": "WEEE focus"
+  },
+  "social_data": {
+    "avg_mobile_usage_percent": 32.5,
+    "max_mobile_usage_percent": 57.89,
+    "monthly_cleaning_cost_eur": 3805.92
+  },
+  "key_indicators": [
+    "Annual water consumption",
+    "Gas energy intensity",
+    "Digital distraction ratio",
+    "Cleaning efficiency"
+  ]
+}
