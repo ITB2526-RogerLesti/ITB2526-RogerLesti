@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .step-card { transition: all 0.3s ease; }
+        .step-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+        .arrow-animate { animation: bounceRight 2s infinite; }
+        @keyframes bounceRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 p-6 md:p-12">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Header con Normativa -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-black text-slate-800 mb-4 tracking-tight">
+                3. WEEE Management Protocol <span class="text-green-600">(RAEE)</span>
+            </h1>
+            <div class="inline-flex items-center gap-4 bg-white px-6 py-2 rounded-full shadow-sm border border-slate-200">
+                <span class="text-xs font-bold uppercase tracking-widest text-slate-500">Legal Framework:</span>
+                <span class="text-sm font-semibold text-blue-600">Royal Decree 110/2015</span>
+                <span class="text-slate-300">|</span>
+                <span class="text-sm font-semibold text-blue-600">Directive 2012/19/EU</span>
+            </div>
+        </div>
+
+        <!-- Flujo Gráfico -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+
+            <!-- PASO 1: Selective Collection -->
+            <div class="step-card bg-white p-8 rounded-3xl border-b-8 border-emerald-500 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">01</div>
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                    <i class="fas fa-recycle"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-4 uppercase">Selective Collection</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Never mix cables, circuit boards, or screens with regular waste. Use
+                    <span class="font-bold text-emerald-600">dedicated containers</span>
+                    based on material (Plastic/Metal vs. Electronics).
+                </p>
+            </div>
+
+            <!-- PASO 2: Safe Storage -->
+            <div class="step-card bg-white p-8 rounded-3xl border-b-8 border-amber-500 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">02</div>
+                <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                    <i class="fas fa-box-open"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-4 uppercase">Safe Storage</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    Lithium batteries must be kept in <span class="font-bold text-amber-600">cool, dry places</span> to prevent fires.
+                    Equipment should not be dismantled to avoid heavy metal leaks (lead/mercury).
+                </p>
+            </div>
+
+            <!-- PASO 3: Authorized Transport -->
+            <div class="step-card bg-white p-8 rounded-3xl border-b-8 border-blue-500 shadow-lg relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">03</div>
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                    <i class="fas fa-file-signature"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-800 mb-4 uppercase">Authorized Transport</h3>
+                <p class="text-slate-600 leading-relaxed text-sm">
+                    The center must contact an <span class="font-bold text-blue-600">Authorized Waste Manager</span>
+                    to ensure legal processing and receive a formal recycling certificate.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer / Advertencia -->
+        <div class="mt-12 bg-slate-800 text-white p-6 rounded-2xl flex items-center gap-6 shadow-xl">
+            <div class="text-3xl text-amber-400">
+                <i class="fas fa-shield-virus"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-lg uppercase tracking-tight text-emerald-400">Environmental Security Notice</h4>
+                <p class="text-slate-400 text-sm">Proper WEEE management prevents environmental contamination and promotes the circular economy within the ITB community.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
