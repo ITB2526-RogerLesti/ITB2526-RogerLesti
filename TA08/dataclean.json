@@ -1,26 +1,54 @@
 {
-  "project_info": {
-    "name": "Energy Saving Calculator ITB",
-    "phase": "1.2 - Datacleaning",
-    "team": [
-      "Roger",
-      "Walid"
-    ]
+  "project_metadata": {
+    "title": "ITB Sustainability Diagnostic",
+    "phase": "1.2 Data Cleaning",
+    "team_members": ["Roger", "Walid"],
+    "group": "Group 7",
+    "last_updated": "2026-03-23"
   },
-  "environmental_data": {
-    "water_m3": 58,
-    "gas_kwh": 12836,
-    "waste_management": "WEEE focus"
+  "esg_data": {
+    "environmental": {
+      "gas_consumption": {
+        "value": 12836,
+        "unit": "kWh",
+        "priority": "Critical",
+        "sdg_impact": 7
+      },
+      "water_consumption": {
+        "value": 58,
+        "unit": "m3",
+        "priority": "High",
+        "sdg_impact": 6
+      },
+      "waste_management": {
+        "type": "WEEE (Electronic Waste)",
+        "status": "High Volume",
+        "sdg_impact": 12
+      }
+    },
+    "social": {
+      "digital_distraction": {
+        "avg_mobile_presence_pct": 32.5,
+        "peak_mobile_presence_pct": 57.89,
+        "impact_area": "Classroom Focus"
+      },
+      "workplace_health": {
+        "monthly_cleaning_cost": 3805.92,
+        "currency": "EUR",
+        "service": "Professional cleaning"
+      }
+    },
+    "governance": {
+      "procurement": {
+        "management_type": "Centralized",
+        "focus": "Office supplies & Paper",
+        "target": "Green provider policy implementation"
+      }
+    }
   },
-  "social_data": {
-    "avg_mobile_usage_percent": 32.5,
-    "max_mobile_usage_percent": 57.89,
-    "monthly_cleaning_cost_eur": 3805.92
-  },
-  "key_indicators": [
-    "Annual water consumption",
-    "Gas energy intensity",
-    "Digital distraction ratio",
-    "Cleaning efficiency"
+  "materiality_matrix": [
+    {"aspect": "Gas Reduction", "urgency": "High", "impact": "High"},
+    {"aspect": "Digital Detox", "urgency": "Medium", "impact": "High"},
+    {"aspect": "WEEE Recycling", "urgency": "Medium", "impact": "Medium"}
   ]
 }
