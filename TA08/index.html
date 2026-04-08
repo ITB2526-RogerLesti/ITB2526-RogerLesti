@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anàlisi - ITB Sostenible</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false, // Evita conflictes amb style.css
+            }
+        }
+    </script>
+
+    <style>
+        .card-info {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .card-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .step-number {
+            background: var(--eco-green);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="background-color: #f3f4f6; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
+
+    <nav class="navbar">
+        <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SOSTENIBLE</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item active">Anàlisi</a>
+            <a href="calculadora.html" class="nav-item">Calculadora</a>
+            <a href="recomanacions.html" class="nav-item">Pla -30%</a>
+        </div>
+    </nav>
+
+    <div class="p-4 md:p-8">
+        <div class="max-w-6xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100">
+
+            <header class="bg-gradient-to-r from-blue-900 to-indigo-800 p-10 text-white text-center">
+                <div class="inline-block bg-green-500/20 text-green-300 px-4 py-1 rounded-full text-sm font-bold mb-4 uppercase tracking-widest">
+                    Fases 1 & 2: Diagnòstic ESG
+                </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-4 text-white">Sustainability Plan Analysis</h1>
+                <p class="text-blue-100 text-lg m-0 opacity-90">Anàlisi profunda de l'impacte ambiental i comparativa Big Tech</p>
+                <div class="flex justify-center gap-4 mt-6">
+                    <span class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm font-medium">Grup 7: Walid & Roger</span>
+                </div>
+            </header>
+
+            <div class="p-6 md:p-10 space-y-12">
+
+                <section>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="p-3 bg-blue-100 rounded-2xl text-blue-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 m-0">Anàlisi de Sostenibilitat ITB</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="card-info bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
+                            <h3 class="font-bold text-emerald-800 mb-4 flex items-center gap-2 m-0 text-lg">🌿 Environmental (E)</h3>
+                            <ul class="text-sm text-emerald-900 space-y-3 m-0 p-0 list-none">
+                                <li class="flex items-start gap-2"><span>•</span> <span>Alt consum elèctric en aules de sistemes i servidors.</span></li>
+                                <li class="flex items-start gap-2"><span>•</span> <span>Generació de residus electrònics (e-waste) per hardware obsolet.</span></li>
+                            </ul>
+                        </div>
+                        <div class="card-info bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                            <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2 m-0 text-lg">👥 Social (S)</h3>
+                            <ul class="text-sm text-blue-900 space-y-3 m-0 p-0 list-none">
+                                <li class="flex items-start gap-2"><span>•</span> <span>Ergonomia de l'alumnat i fatiga visual digital.</span></li>
+                                <li class="flex items-start gap-2"><span>•</span> <span>Inclusió mitjançant la reducció de la bretxa digital.</span></li>
+                            </ul>
+                        </div>
+                        <div class="card-info bg-purple-50 p-6 rounded-2xl border border-purple-100">
+                            <h3 class="font-bold text-purple-800 mb-4 flex items-center gap-2 m-0 text-lg">⚖️ Governance (G)</h3>
+                            <ul class="text-sm text-purple-900 space-y-3 m-0 p-0 list-none">
+                                <li class="flex items-start gap-2"><span>•</span> <span>Ètica en la gestió de dades i privadesa.</span></li>
+                                <li class="flex items-start gap-2"><span>•</span> <span>Foment del programari lliure (Open Source) al centre.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="bg-slate-50 p-8 rounded-3xl border border-slate-200 shadow-inner">
+                    <h2 class="text-xl font-bold text-gray-800 mb-8 flex items-center gap-3 m-0">
+                        <div class="p-2 bg-amber-100 text-amber-700 rounded-lg">♻️</div>
+                        Gestió de Residus RAEE (RD 110/2015)
+                    </h2>
+                    <div class="flex flex-col md:flex-row justify-between gap-8">
+                        <div class="flex-1 text-center group">
+                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">1</div>
+                            <h4 class="font-bold text-gray-800 m-0">Recollida Selectiva</h4>
+                            <p class="text-sm text-gray-600 mt-3">Separació estricta de cables, pantalles i plaques. Mai al rebuig comú.</p>
+                        </div>
+                        <div class="flex-1 text-center group">
+                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">2</div>
+                            <h4 class="font-bold text-gray-800 m-0">Emmagatzematge Segur</h4>
+                            <p class="text-sm text-gray-600 mt-3">Espais secs per a bateries. Evitar el desmuntatge sense protecció.</p>
+                        </div>
+                        <div class="flex-1 text-center group">
+                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">3</div>
+                            <h4 class="font-bold text-gray-800 m-0">Gestió Certificada</h4>
+                            <p class="text-sm text-gray-600 mt-3">Lliurament a gestors autoritzats per a la traçabilitat legal.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 m-0">
+                        <div class="p-2 bg-indigo-100 text-indigo-700 rounded-lg">📊</div>
+                        Big Tech Comparison & Critique
+                    </h2>
+                    <div class="overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
+                        <table class="w-full text-left border-collapse bg-white m-0">
+                            <thead class="bg-slate-800 text-white uppercase text-xs">
+                                <tr>
+                                    <th class="p-5">Company</th>
+                                    <th class="p-5">Commitment</th>
+                                    <th class="p-5">Improvement Proposal (Grup 7)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-gray-600">
+                                <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <td class="p-5 font-bold text-gray-900">Microsoft</td>
+                                    <td class="p-5">Carbon Negative by 2030.</td>
+                                    <td class="p-5 bg-orange-50/50 italic text-orange-800">Extend hardware support for older OS.</td>
+                                </tr>
+                                <tr class="border-b hover:bg-gray-50 transition-colors">
+                                    <td class="p-5 font-bold text-gray-900">Google</td>
+                                    <td class="p-5">24/7 Carbon-Free Energy.</td>
+                                    <td class="p-5 bg-orange-50/50 italic text-orange-800">Radical AI energy efficiency optimization.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <div class="bg-gradient-to-br from-emerald-500 to-teal-700 p-10 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-3 text-white m-0">
+                        💡 Our Strategic Proposal
+                    </h3>
+                    <p class="text-xl leading-relaxed m-0 text-emerald-50 font-medium">
+                        Implementació del <strong>"Reuse Workshop"</strong>: Un laboratori gestionat per alumnes per reparar hardware de l'ITB.
+                        Això fomenta el <strong>"Right to Repair"</strong> i redueix directament la petjada de carboni del centre.
+                    </p>
+                    <div class="mt-8">
+                        <a href="calculadora.html" class="inline-block bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors no-underline">Provar Càlcul d'Estalvi →</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer class="bg-gray-50 p-8 text-center text-gray-500 text-sm border-t border-gray-200 m-0">
+                Projecte Sostenibilitat ITB | 2026 | Walid & Roger | Grup 7
+            </footer>
+        </div>
+    </div>
+
+</body>
+</html>

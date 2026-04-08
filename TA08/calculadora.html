@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>ITB Sostenible | Calculadora</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SOSTENIBLE</span></div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-item">Anàlisi</a>
+            <a href="calculadora.html" class="nav-item active">Calculadora</a>
+            <a href="recomanacions.html" class="nav-item">Pla -30%</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="page-header">
+            <h1>Calculadora d'Estalvi</h1>
+            <p>Simula l'impacte del nostre pla d'acció sobre el consum mensual.</p>
+        </header>
+
+        <section class="card-inputs">
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label>⚡ Electricitat (kWh)</label>
+                    <input type="number" id="baseElec" value="1200">
+                </div>
+                <div class="input-group">
+                    <label>💧 Aigua (m³)</label>
+                    <input type="number" id="baseAigua" value="150">
+                </div>
+                <div class="input-group">
+                    <label>📄 Paper (kg)</label>
+                    <input type="number" id="baseOficina" value="40">
+                </div>
+                <div class="input-group">
+                    <label>🧼 Neteja (L)</label>
+                    <input type="number" id="baseNeteja" value="20">
+                </div>
+            </div>
+            <div class="botons-container">
+                <button onclick="generarInforme(false)" class="btn btn-base">Escenari Actual</button>
+                <button onclick="generarInforme('any1')" class="btn btn-any1">Any 1 (-12%)</button>
+                <button onclick="generarInforme('any3')" class="btn btn-any3">Any 3 (-30%)</button>
+            </div>
+        </section>
+
+        <h2 id="titol-resultats" style="margin-bottom: 2rem;">Resultats del Diagnòstic</h2>
+        <div id="grid-resultats">
+            </div>
+    </div>
+
+    <script src="js/calculadora.js"></script>
+</body>
+</html>
