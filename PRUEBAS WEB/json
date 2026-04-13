@@ -1,0 +1,70 @@
+{
+  "project": "Sustainability Audit ITB",
+  "authors": ["Roger", "Walid"],
+  "phase": 2,
+  "data_sources_count": 18,
+  "categories": [
+    {
+      "id": "CAT01",
+      "name": "Energy & Photovoltaic",
+      "source": "Plant Report ITB 01-2025",
+      "metrics": {
+        "daily_avg_yield_kwh": 45.85,
+        "total_co2_avoided_tons": 0.68,
+        "avg_self_consumption_rate": "95.4%",
+        "peak_power_recorded_kw": 11.6
+      }
+    },
+    {
+      "id": "CAT02",
+      "name": "Water Management",
+      "sources": ["Aigua-image001", "Aigua-image002", "Aigua-image003"],
+      "analysis": "Consumo monitorizado por franjas horarias para detección de fugas (ITB Leaks)."
+    },
+    {
+      "id": "CAT03",
+      "name": "Maintenance & Services",
+      "invoices": [
+        {"id": "F055", "provider": "Neteges", "concept": "Service 1"},
+        {"id": "F056", "provider": "Neteges", "concept": "Service 2"},
+        {"id": "F327", "amount_euro": 34.00, "concept": "Technical Repair"},
+        {"id": "F328", "amount_euro": 198.00, "concept": "Equipment Maintenance"}
+      ]
+    },
+    {
+      "id": "CAT04",
+      "name": "Connectivity & Infrastructure",
+      "digital_services": [
+        {"id": "F078", "provider": "DIGI", "period": "May 2024", "status": "Declassified"},
+        {"id": "F294", "provider": "O2", "period": "March 2024", "status": "Declassified"}
+      ]
+    },
+    {
+      "id": "CAT05",
+      "name": "Office Resources",
+      "sources": ["F035", "F036", "F039", "F041", "F046"],
+      "logistics": {
+        "primary_provider": "Lyreco",
+        "key_items": ["Board markers", "Recycled paper", "Classroom supplies"]
+      }
+    },
+    {
+      "id": "CAT06",
+      "name": "Social & Classroom Indicators",
+      "source": "INDICADORS Mobils a l'aula 2024-2025",
+      "data_points": [
+        {"date": "15/11/24", "group": "ASIXC1A", "usage_pct": 15.0},
+        {"date": "13/12/24", "group": "ASIXC1A", "usage_pct": 57.89},
+        {"date": "22/11/24", "group": "ASIXc1B", "usage_pct": 15.0}
+      ]
+    },
+    {
+      "id": "CAT07",
+      "name": "Personal Sustainability Impact",
+      "students": [
+        {"name": "Roger", "energy_saved_kwh": 12.5, "co2_reduced_kg": 4.2},
+        {"name": "Walid", "energy_saved_kwh": 8.3, "co2_reduced_kg": 2.8}
+      ]
+    }
+  ]
+}
