@@ -1,0 +1,431 @@
+/* =========================================================================
+   ESTILS DEFINITIUS ITB SOSTENIBLE - FASE 3
+   Dissenyat per: Grup 7 (Walid & Roger)
+   ========================================================================= */
+
+/* 1. IMPORTACIÓ DE FONTS I VARIABLES */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Paleta de colors Corporativa i Ecològica */
+    --primary: #1e3a8a;           /* Blau fosc ITB */
+    --primary-light: #3b82f6;     /* Blau accent */
+    --secondary: #0f172a;         /* Color text títols */
+    --eco-green: #10b981;         /* Verd Sostenibilitat */
+    --eco-dark: #065f46;
+    --eco-soft: #ecfdf5;
+
+    /* Colors d'estat */
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --bg-main: #f8fafc;           /* Fons gris molt suau */
+
+    /* Estètica */
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 2. RESET I BASE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--secondary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* 3. NAVEGACIÓ (Estil Modern) */
+.navbar {
+    background: rgba(30, 58, 138, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+.logo {
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: white;
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    padding: 0.5rem 0;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: white;
+    border-bottom: 2px solid var(--eco-green);
+}
+
+/* 4. CAPSÇALERA DE PÀGINA */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 1rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* 5. TARGETES D'ENTRADA (INPUTS) */
+.card-inputs {
+    background: white;
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    margin-bottom: 3rem;
+}
+
+.grid-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary);
+}
+
+.input-group input {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+/* 6. BOTONS (Estil Poliment) */
+.botons-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+
+.btn-base { background: var(--primary); color: white; }
+.btn-any1 { background: var(--primary-light); color: white; }
+.btn-any3 { background: var(--eco-green); color: white; }
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    filter: brightness(1.1);
+}
+
+/* 7. GRID DE RESULTATS (8 TARGETES) */
+.grid-resultats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.result-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border-bottom: 4px solid var(--primary);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.result-card.highlight {
+    border-bottom-color: var(--eco-green);
+    background: linear-gradient(to bottom, #ffffff, var(--eco-soft));
+}
+
+.result-card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+}
+
+.result-card h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: #64748b;
+    letter-spacing: 1px;
+}
+
+.result-card .value {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 10px 0;
+    color: var(--secondary);
+}
+
+.result-card .value span {
+    font-size: 1rem;
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* 8. IMPACTE ASG (TARGETA PREMIUM CO2) */
+.impacte-asg-card {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #10b981 100%);
+    color: white;
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    margin-top: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.impacte-asg-card::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+
+.asg-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.co2-display {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.co2-display span {
+    font-size: 1.5rem;
+    opacity: 0.8;
+}
+
+/* 9. TAULA DE CRONOGRAMA (RECOMANACIONS) */
+.table-wrapper {
+    background: white;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table thead tr {
+    background-color: #f1f5f9;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    padding: 1.2rem 1.5rem;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #e2e8f0;
+    transition: var(--transition);
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.badge-percent {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+.badge-percent.blue { background: #dbeafe; color: #1e40af; }
+.badge-percent.orange { background: #ffedd5; color: #9a3412; }
+.badge-percent.green { background: #dcfce7; color: #166534; }
+
+/* 10. ANIMACIONS */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-card { animation: fadeInUp 0.5s ease forwards; }
+
+/* --- MILLORES DE NAVEGACIÓ (NAVBAR) --- */
+.navbar {
+    background: #ffffff !important; /* Passem a un blanc net */
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.logo { color: var(--primary) !important; }
+
+.nav-links a {
+    color: var(--text-muted) !important;
+    padding: 8px 16px !important;
+    border-radius: 8px;
+    border-bottom: none !important; /* Traiem la línia lletja */
+}
+
+.nav-links a:hover {
+    background: #f1f5f9;
+    color: var(--primary) !important;
+}
+
+.nav-links a.active {
+    background: var(--primary);
+    color: white !important;
+}
+
+/* --- DISSENY DE TIMELINE (PLA -30%) --- */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-left: 50px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 3rem;
+}
+
+.timeline-number {
+    position: absolute;
+    left: -52px;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    z-index: 2;
+    border: 4px solid var(--bg-main);
+}
+
+.timeline-content {
+    transition: var(--transition);
+}
+
+.timeline-content:hover {
+    transform: translateX(10px);
+}
+
+.plan-list {
+    margin-top: 1rem;
+    padding-left: 1.2rem;
+    color: var(--text-muted);
+}
+
+.plan-list li {
+    margin-bottom: 0.5rem;
+}
+
+/* --- BADGES MILLORATS --- */
+.badge-percent {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+}
+
+/* Estils per als botons de la calculadora que també surten aquí */
+.btn-any3 {
+    box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3);
+}
