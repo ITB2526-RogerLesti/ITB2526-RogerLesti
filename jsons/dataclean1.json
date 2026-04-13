@@ -1,7 +1,6 @@
 {
-  "project": "Sustainability Audit ITB - Fase 3 Definitiva",
+  "project": "Sustainability Audit ITB - Fase 3",
   "authors": ["Roger", "Walid"],
-  "phase": 3,
   "data_sources_count": 22,
   "categories": [
     {
@@ -9,51 +8,37 @@
       "name": "Energy & Photovoltaic",
       "source": "Plant Report ITB 01-2025",
       "metrics": {
-        "daily_avg_generation_kwh": 43.22,
-        "monthly_solar_yield_mwh": 1.34,
-        "estimated_total_institute_consumption_kwh": 8500.0,
-        "solar_coverage_ratio": "15.7%",
-        "peak_power_recorded_kw": 11.6
+        "daily_avg_yield_kwh": 43.22,
+        "total_yield_mwh": 1.34,
+        "estimated_total_consumption_kwh": 8500.0,
+        "co2_avoided_tons": 0.603
       },
-      "note": "La producció solar cobreix el 15.7% del consum total estimat per a un centre tecnològic."
+      "details": "Dades basades en la capacitat de 30.94 kWp confirmada al gener de 2025."
     },
     {
       "id": "CAT02",
       "name": "Water Management",
-      "sources": ["Aigua-image001", "Aigua-image002", "Aigua-image003"],
       "metrics": {
-        "avg_hourly_flow_litres": 193.0,
-        "peak_usage_litres": 540.0,
-        "monthly_base_m3": 145.0
+        "monthly_base_m3": 145.0,
+        "peak_usage_litres": 540.0
       }
     },
     {
       "id": "CAT03",
-      "name": "Connectivity & Digital Services",
+      "name": "Infrastructure & Connectivity",
       "invoices": [
-        {"id": "F078", "provider": "DIGI", "monthly_base_eur": 25.00, "service": "Fibra Optica 1Gbps"},
-        {"id": "F294", "provider": "O2", "monthly_base_eur": 50.00, "service": "Lineas Moviles Centro"}
+        {"id": "F078", "provider": "DIGI", "amount": 30.00, "service": "Fibra 1Gb"},
+        {"id": "F294", "provider": "O2", "amount": 50.00, "service": "Mòbil i Fibra"}
       ]
     },
     {
       "id": "CAT04",
-      "name": "Maintenance & Circularity",
-      "invoices": [
-        {"id": "F055", "provider": "Neteges", "amount_euro": 198.00, "concept": "Neteja Especialitzada"},
-        {"id": "F046", "provider": "Ferreteria", "amount_euro": 132.93, "concept": "Material per a reparacions"},
-        {"id": "F327", "amount_euro": 34.00, "concept": "Reparació tècnica puntual"}
-      ],
-      "strategy": "Priorització de reparació (F046) sobre compra nova per a reduir residus."
-    },
-    {
-      "id": "CAT05",
-      "name": "Classroom Indicators",
-      "source": "INDICADORS Mobils a l'aula 2024-2025",
-      "key_data": {
-        "max_usage_observed_pct": 57.89,
-        "target_reduction": "20%",
-        "impact": "Reducció de distracció i estalvi d'energia en càrrega de dispositius."
-      }
+      "name": "Maintenance & Cleaning",
+      "metrics": {
+        "extraordinary_services_eur": 2105.80,
+        "cleaning_supplies_eur": 620.05
+      },
+      "sources": ["F046-NP", "F055-Neteges"]
     }
   ]
 }
