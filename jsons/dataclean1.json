@@ -1,44 +1,74 @@
 {
-  "project": "Sustainability Audit ITB - Fase 3",
+  "project": "Sustainability Audit ITB - Fase 3 (Comprehensive)",
   "authors": ["Roger", "Walid"],
   "data_sources_count": 22,
   "categories": [
     {
       "id": "CAT01",
       "name": "Energy & Photovoltaic",
-      "source": "Plant Report ITB 01-2025",
+      "source": "Plant Report_ITB_01-2025.csv",
       "metrics": {
-        "daily_avg_yield_kwh": 43.22,
-        "total_yield_mwh": 1.34,
-        "estimated_total_consumption_kwh": 8500.0,
-        "co2_avoided_tons": 0.603
-      },
-      "details": "Dades basades en la capacitat de 30.94 kWp confirmada al gener de 2025."
+        "installed_capacity_kwp": 30.94,
+        "daily_avg_consumption_kwh": 159.55,
+        "daily_avg_generation_kwh": 48.86,
+        "import_from_grid_avg_kwh": 114.12,
+        "self_consumption_rate_avg": 93.8,
+        "monthly_yield_mwh": 1.34,
+        "co2_avoided_tons_monthly": 0.603
+      }
     },
     {
       "id": "CAT02",
       "name": "Water Management",
+      "source": "Aigües de Barcelona (Screenshots)",
       "metrics": {
         "monthly_base_m3": 145.0,
-        "peak_usage_litres": 540.0
+        "avg_hourly_flow_litres": 193.0,
+        "peak_usage_alert_litres": 540.0,
+        "monitored_leaks": 0
       }
     },
     {
       "id": "CAT03",
-      "name": "Infrastructure & Connectivity",
-      "invoices": [
-        {"id": "F078", "provider": "DIGI", "amount": 30.00, "service": "Fibra 1Gb"},
-        {"id": "F294", "provider": "O2", "amount": 50.00, "service": "Mòbil i Fibra"}
-      ]
+      "name": "Connectivity & Digital Infrastructure",
+      "invoices": {
+        "DIGI_F078": {"base_eur": 25.00, "iva_eur": 5.25, "total": 30.25, "service": "Fibra 1Gbps"},
+        "O2_F294": {"total_eur": 50.00, "service": "Línies mòbils centre"},
+        "hosting_services": {"status": "active", "provider": "Digital Ocean / Azure"}
+      }
     },
     {
       "id": "CAT04",
-      "name": "Maintenance & Cleaning",
-      "metrics": {
-        "extraordinary_services_eur": 2105.80,
-        "cleaning_supplies_eur": 620.05
+      "name": "Circular Economy & Resources",
+      "source": "Lyreco & Local Hardware Invoices",
+      "procurement": {
+        "paper_recycled_usage_kg": 85.0,
+        "office_supplies_monthly_eur": 250.0,
+        "repair_materials_ferreteria_eur": 132.93,
+        "repair_vs_buy_ratio": "3.5:1"
       },
-      "sources": ["F046-NP", "F055-Neteges"]
+      "notable_items": ["Marcadors Begreen", "Paper Navigator Universal"]
+    },
+    {
+      "id": "CAT05",
+      "name": "Maintenance & Hygiene",
+      "source": "Neteges & Repairs Invoices",
+      "costs": {
+        "extraordinary_repairs_eur": 2105.80,
+        "routine_cleaning_supplies_eur": 620.05,
+        "air_conditioning_fix_eur": 288.00
+      }
+    },
+    {
+      "id": "CAT06",
+      "name": "Social Impact - Classroom Indicators",
+      "source": "INDICADORS Mobils a l'aula 2024-2025.pdf",
+      "data": {
+        "max_mobile_usage_recorded": 57.89,
+        "min_mobile_usage_recorded": 15.00,
+        "avg_students_per_class": 20,
+        "sustainability_awareness_score": "High"
+      }
     }
   ]
 }
