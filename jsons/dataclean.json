@@ -1,54 +1,59 @@
 {
-  "project_metadata": {
-    "title": "ITB Sustainability Diagnostic",
-    "phase": "1.2 Data Cleaning",
-    "team_members": ["Roger", "Walid"],
-    "group": "Group 7",
-    "last_updated": "2026-03-23"
-  },
-  "esg_data": {
-    "environmental": {
-      "gas_consumption": {
-        "value": 12836,
-        "unit": "kWh",
-        "priority": "Critical",
-        "sdg_impact": 7
+  "project": "Sustainability Audit ITB - Fase 3 Definitiva",
+  "authors": ["Roger", "Walid"],
+  "phase": 3,
+  "data_sources_count": 22,
+  "categories": [
+    {
+      "id": "CAT01",
+      "name": "Energy & Photovoltaic",
+      "source": "Plant Report ITB 01-2025",
+      "metrics": {
+        "daily_avg_generation_kwh": 43.22,
+        "monthly_solar_yield_mwh": 1.34,
+        "estimated_total_institute_consumption_kwh": 8500.0,
+        "solar_coverage_ratio": "15.7%",
+        "peak_power_recorded_kw": 11.6
       },
-      "water_consumption": {
-        "value": 58,
-        "unit": "m3",
-        "priority": "High",
-        "sdg_impact": 6
-      },
-      "waste_management": {
-        "type": "WEEE (Electronic Waste)",
-        "status": "High Volume",
-        "sdg_impact": 12
+      "note": "La producció solar cobreix el 15.7% del consum total estimat per a un centre tecnològic."
+    },
+    {
+      "id": "CAT02",
+      "name": "Water Management",
+      "sources": ["Aigua-image001", "Aigua-image002", "Aigua-image003"],
+      "metrics": {
+        "avg_hourly_flow_litres": 193.0,
+        "peak_usage_litres": 540.0,
+        "monthly_base_m3": 145.0
       }
     },
-    "social": {
-      "digital_distraction": {
-        "avg_mobile_presence_pct": 32.5,
-        "peak_mobile_presence_pct": 57.89,
-        "impact_area": "Classroom Focus"
-      },
-      "workplace_health": {
-        "monthly_cleaning_cost": 3805.92,
-        "currency": "EUR",
-        "service": "Professional cleaning"
-      }
+    {
+      "id": "CAT03",
+      "name": "Connectivity & Digital Services",
+      "invoices": [
+        {"id": "F078", "provider": "DIGI", "monthly_base_eur": 25.00, "service": "Fibra Optica 1Gbps"},
+        {"id": "F294", "provider": "O2", "monthly_base_eur": 50.00, "service": "Lineas Moviles Centro"}
+      ]
     },
-    "governance": {
-      "procurement": {
-        "management_type": "Centralized",
-        "focus": "Office supplies & Paper",
-        "target": "Green provider policy implementation"
+    {
+      "id": "CAT04",
+      "name": "Maintenance & Circularity",
+      "invoices": [
+        {"id": "F055", "provider": "Neteges", "amount_euro": 198.00, "concept": "Neteja Especialitzada"},
+        {"id": "F046", "provider": "Ferreteria", "amount_euro": 132.93, "concept": "Material per a reparacions"},
+        {"id": "F327", "amount_euro": 34.00, "concept": "Reparació tècnica puntual"}
+      ],
+      "strategy": "Priorització de reparació (F046) sobre compra nova per a reduir residus."
+    },
+    {
+      "id": "CAT05",
+      "name": "Classroom Indicators",
+      "source": "INDICADORS Mobils a l'aula 2024-2025",
+      "key_data": {
+        "max_usage_observed_pct": 57.89,
+        "target_reduction": "20%",
+        "impact": "Reducció de distracció i estalvi d'energia en càrrega de dispositius."
       }
     }
-  },
-  "materiality_matrix": [
-    {"aspect": "Gas Reduction", "urgency": "High", "impact": "High"},
-    {"aspect": "Digital Detox", "urgency": "Medium", "impact": "High"},
-    {"aspect": "WEEE Recycling", "urgency": "Medium", "impact": "Medium"}
   ]
 }
