@@ -2,11 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ITB Sustainable | Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator - ITB Sustainable</title>
+
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: { preflight: false }
+        }
+    </script>
+
+    <style>
+        .input-card {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        input[type="range"] {
+            width: 100%;
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+        .btn-plan {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .btn-plan:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+    </style>
 </head>
-<body>
+<body style="background-color: #f3f4f6; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
+
     <nav class="navbar">
         <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SUSTAINABLE</span></div>
         <div class="nav-links">
@@ -16,49 +47,78 @@
         </div>
     </nav>
 
-    <div class="container">
-        <header class="page-header">
-            <h1>Savings Calculator</h1>
-            <p>Simulate the impact of our action plan on monthly consumption.</p>
-        </header>
+    <div class="p-4 md:p-8">
+        <div class="max-w-6xl mx-auto space-y-8">
 
-        <section class="card-inputs">
-            <div class="grid-inputs">
-                <div class="input-group">
-                    <label>⚡ Electricity (kWh)</label>
-                    <input type="number" id="baseElec" value="1200">
+            <header class="bg-gradient-to-r from-emerald-600 to-teal-700 p-10 rounded-[2.5rem] text-white shadow-xl">
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-2 text-white">Interactive Savings Calculator</h1>
+                <p class="text-emerald-50 text-lg opacity-90">Simulate consumption reductions and see the environmental impact in real-time.</p>
+            </header>
+
+            <div class="grid lg:grid-cols-3 gap-8">
+
+                <div class="lg:col-span-1 space-y-6">
+                    <h2 class="text-xl font-bold text-gray-800 px-2">Adjust Parameters</h2>
+
+                    <div class="flex gap-3 mb-6">
+                        <div onclick="generarInforme('any1')" class="btn-plan flex-1 bg-blue-600 text-white p-3 rounded-xl text-center font-bold text-sm shadow-lg">Year 1 (-12%)</div>
+                        <div onclick="generarInforme('any3')" class="btn-plan flex-1 bg-emerald-600 text-white p-3 rounded-xl text-center font-bold text-sm shadow-lg">Year 3 (-30%)</div>
+                    </div>
+
+                    <div class="input-card">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">⚡ Electricity (kWh/day)</label>
+                        <input type="number" id="baseElec" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="164.8">
+                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valElec" class="text-yellow-600">0%</span></label>
+                        <input type="range" id="redElec" min="-50" max="100" value="0" oninput="document.getElementById('valElec').innerText = this.value + '%'">
+                    </div>
+
+                    <div class="input-card">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">💧 Water (m³/month)</label>
+                        <input type="number" id="baseAigua" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="145">
+                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valAigua" class="text-blue-600">0%</span></label>
+                        <input type="range" id="redAigua" min="-50" max="100" value="0" oninput="document.getElementById('valAigua').innerText = this.value + '%'">
+                    </div>
+
+                    <div class="input-card">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">📄 Paper (kg/month)</label>
+                        <input type="number" id="baseOficina" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="85">
+                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valPaper" class="text-slate-500">0%</span></label>
+                        <input type="range" id="redPaper" min="-50" max="100" value="0" oninput="document.getElementById('valPaper').innerText = this.value + '%'">
+                    </div>
+
+                    <div class="input-card">
+                        <label class="block text-sm font-bold text-gray-700 mb-2">🧼 Cleaning (L/month)</label>
+                        <input type="number" id="baseNeteja" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="42">
+                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valNeteja" class="text-pink-600">0%</span></label>
+                        <input type="range" id="redNeteja" min="-50" max="100" value="0" oninput="document.getElementById('valNeteja').innerText = this.value + '%'">
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>💧 Water (m³)</label>
-                    <input type="number" id="baseAigua" value="150">
-                </div>
-                <div class="input-group">
-                    <label>📄 Paper (kg)</label>
-                    <input type="number" id="baseOficina" value="40">
-                </div>
-                <div class="input-group">
-                    <label>🧼 Cleaning (L)</label>
-                    <input type="number" id="baseNeteja" value="20">
+
+                <div class="lg:col-span-2 space-y-8">
+
+                    <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 id="titol-resultats" class="text-2xl font-bold text-gray-800 m-0">Consumption Forecast</h2>
+                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold">LIVE CHART</span>
+                        </div>
+                        <div style="position: relative; height:45vh; width:100%">
+                            <canvas id="graficConsum"></canvas>
+                        </div>
+                    </div>
+
+                    <div id="grid-resultats" class="grid md:grid-cols-2 gap-4">
+                        </div>
                 </div>
             </div>
-            <div class="botons-container">
-                <button onclick="generarInforme(false)" class="btn btn-base">Current Scenario</button>
-                <button onclick="generarInforme('any1')" class="btn btn-any1">Year 1 (-12%)</button>
-                <button onclick="generarInforme('any3')" class="btn btn-any3">Year 3 (-30%)</button>
-            </div>
-        </section>
 
-        <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #eee;">
-            <h3 style="color: #1e3a8a; margin-bottom: 15px; font-size: 1.2rem;">📈 Monthly Consumption Curve and Cost Forecast (CPI +3%)</h3>
-            <canvas id="graficConsum" style="width: 100%; max-height: 350px;"></canvas>
+            <footer class="text-center text-gray-400 text-sm py-10">
+                ITB Sustainability Project | 2026 | Group 7
+            </footer>
         </div>
-
-        <h2 id="titol-resultats" style="margin-bottom: 2rem;">Diagnosis Results</h2>
-
-        <div id="grid-resultats">
-            </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/calculadora.js"></script>
+
 </body>
 </html>
