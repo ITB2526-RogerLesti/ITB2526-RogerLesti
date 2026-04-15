@@ -1,17 +1,17 @@
 {
-  "project": "Sustainability Audit ITB",
-  "mesos": [
-    { "nom": "Gener", "elec": 4945, "aigua": 145, "paper": 85, "neteja": 42 },
-    { "nom": "Febrer", "elec": 4700, "aigua": 140, "paper": 80, "neteja": 40 },
-    { "nom": "Març", "elec": 4500, "aigua": 150, "paper": 95, "neteja": 45 },
-    { "nom": "Abril", "elec": 4100, "aigua": 155, "paper": 70, "neteja": 38 },
-    { "nom": "Maig", "elec": 3900, "aigua": 160, "paper": 85, "neteja": 42 },
-    { "nom": "Juny", "elec": 4200, "aigua": 180, "paper": 110, "neteja": 50 },
-    { "nom": "Juliol", "elec": 2100, "aigua": 90, "paper": 10, "neteja": 15 },
-    { "nom": "Agost", "elec": 1200, "aigua": 40, "paper": 0, "neteja": 5 },
-    { "nom": "Setembre", "elec": 4000, "aigua": 150, "paper": 90, "neteja": 45 },
-    { "nom": "Octubre", "elec": 4400, "aigua": 145, "paper": 85, "neteja": 42 },
-    { "nom": "Novembre", "elec": 4700, "aigua": 140, "paper": 80, "neteja": 40 },
-    { "nom": "Desembre", "elec": 4800, "aigua": 130, "paper": 60, "neteja": 35 }
+  "project": "ITB Sustainability Audit",
+  "months": [
+    { "name": "January", "elec": 4945, "water": 145, "paper": 85, "cleaning": 42 },
+    { "name": "February", "elec": 4700, "water": 140, "paper": 80, "cleaning": 40 },
+    { "name": "March", "elec": 4500, "water": 150, "paper": 95, "cleaning": 45 },
+    { "name": "April", "elec": 4100, "water": 155, "paper": 70, "cleaning": 38 },
+    { "name": "May", "elec": 3900, "water": 160, "paper": 85, "cleaning": 42 },
+    { "name": "June", "elec": 4200, "water": 180, "paper": 110, "cleaning": 50 },
+    { "name": "July", "elec": 2100, "water": 90, "paper": 10, "cleaning": 15 },
+    { "name": "August", "elec": 1200, "water": 40, "paper": 0, "cleaning": 5 },
+    { "name": "September", "elec": 4000, "water": 150, "paper": 90, "cleaning": 45 },
+    { "name": "October", "elec": 4400, "water": 145, "paper": 85, "cleaning": 42 },
+    { "name": "November", "elec": 4700, "water": 140, "paper": 80, "cleaning": 40 },
+    { "name": "December", "elec": 4800, "water": 130, "paper": 60, "cleaning": 35 }
   ]
 }

@@ -1,35 +1,35 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ITB Sostenible | Calculadora</title>
+    <title>ITB Sustainable | Calculator</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SOSTENIBLE</span></div>
+        <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SUSTAINABLE</span></div>
         <div class="nav-links">
-            <a href="index.html" class="nav-item">Anàlisi</a>
-            <a href="calculadora.html" class="nav-item active">Calculadora</a>
-            <a href="recomanacions.html" class="nav-item">Pla -30%</a>
+            <a href="index.html" class="nav-item">Analysis</a>
+            <a href="calculadora.html" class="nav-item active">Calculator</a>
+            <a href="recomanacions.html" class="nav-item">Plan -30%</a>
         </div>
     </nav>
 
     <div class="container">
         <header class="page-header">
-            <h1>Calculadora d'Estalvi</h1>
-            <p>Simula l'impacte del nostre pla d'acció sobre el consum mensual.</p>
+            <h1>Savings Calculator</h1>
+            <p>Simulate the impact of our action plan on monthly consumption.</p>
         </header>
 
         <section class="card-inputs">
             <div class="grid-inputs">
                 <div class="input-group">
-                    <label>⚡ Electricitat (kWh)</label>
+                    <label>⚡ Electricity (kWh)</label>
                     <input type="number" id="baseElec" value="1200">
                 </div>
                 <div class="input-group">
-                    <label>💧 Aigua (m³)</label>
+                    <label>💧 Water (m³)</label>
                     <input type="number" id="baseAigua" value="150">
                 </div>
                 <div class="input-group">
@@ -37,23 +37,23 @@
                     <input type="number" id="baseOficina" value="40">
                 </div>
                 <div class="input-group">
-                    <label>🧼 Neteja (L)</label>
+                    <label>🧼 Cleaning (L)</label>
                     <input type="number" id="baseNeteja" value="20">
                 </div>
             </div>
             <div class="botons-container">
-                <button onclick="generarInforme(false)" class="btn btn-base">Escenari Actual</button>
-                <button onclick="generarInforme('any1')" class="btn btn-any1">Any 1 (-12%)</button>
-                <button onclick="generarInforme('any3')" class="btn btn-any3">Any 3 (-30%)</button>
+                <button onclick="generarInforme(false)" class="btn btn-base">Current Scenario</button>
+                <button onclick="generarInforme('any1')" class="btn btn-any1">Year 1 (-12%)</button>
+                <button onclick="generarInforme('any3')" class="btn btn-any3">Year 3 (-30%)</button>
             </div>
         </section>
 
         <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; border: 1px solid #eee;">
-            <h3 style="color: #1e3a8a; margin-bottom: 15px; font-size: 1.2rem;">📈 Curva de Consum Mensual i Previsió de Costos (IPC +3%)</h3>
+            <h3 style="color: #1e3a8a; margin-bottom: 15px; font-size: 1.2rem;">📈 Monthly Consumption Curve and Cost Forecast (CPI +3%)</h3>
             <canvas id="graficConsum" style="width: 100%; max-height: 350px;"></canvas>
         </div>
 
-        <h2 id="titol-resultats" style="margin-bottom: 2rem;">Resultats del Diagnòstic</h2>
+        <h2 id="titol-resultats" style="margin-bottom: 2rem;">Diagnosis Results</h2>
 
         <div id="grid-resultats">
             </div>

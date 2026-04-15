@@ -1,9 +1,9 @@
 /* =========================================================================
-   ESTILS DEFINITIUS ITB SOSTENIBLE - FASE 3 (UNIFICAT + RESPONSIVE)
-   Dissenyat per: Grup 7 (Walid & Roger)
+   DEFINITIVE ITB SUSTAINABLE STYLES - PHASE 3 (UNIFIED + RESPONSIVE)
+   Designed by: Group 7 (Walid & Roger)
    ========================================================================= */
 
-/* 1. IMPORTACIÓ DE FONTS I VARIABLES */
+/* 1. FONT IMPORT AND VARIABLES */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -25,7 +25,7 @@
     --text-muted: #64748b;
 }
 
-/* 2. RESET I BASE */
+/* 2. RESET AND BASE */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -36,7 +36,7 @@ body {
 }
 .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
 
-/* 3. NAVEGACIÓ */
+/* 3. NAVIGATION */
 .navbar {
     background: #ffffff !important;
     border-bottom: 1px solid #e2e8f0;
@@ -63,12 +63,12 @@ body {
 .nav-links a:hover { background: #f1f5f9; color: var(--primary) !important; }
 .nav-links a.active { background: var(--primary); color: white !important; }
 
-/* 4. CAPSÇALERA */
+/* 4. HEADER */
 .page-header { text-align: center; margin-bottom: 3rem; padding-top: 1rem; }
 .page-header h1 { font-size: 2.5rem; font-weight: 800; color: var(--secondary); margin-bottom: 0.5rem; }
 .page-header p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-/* 5. CALCULADORA (CARDS & INPUTS) */
+/* 5. CALCULATOR (CARDS & INPUTS) */
 .card-inputs {
     background: white;
     padding: 2.5rem;
@@ -90,7 +90,7 @@ body {
 }
 .input-group input:focus { outline: none; border-color: var(--primary-light); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
 
-/* 6. BOTONS */
+/* 6. BUTTONS */
 .botons-container { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
 .btn {
     padding: 12px 24px;
@@ -109,7 +109,7 @@ body {
 .btn-any3 { background: var(--eco-green); color: white; box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3); }
 .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
 
-/* 7. RESULTATS */
+/* 7. RESULTS */
 .grid-resultats { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
 .result-card {
     background: white;
@@ -125,7 +125,7 @@ body {
 .result-card .value { font-size: 2.2rem; font-weight: 800; margin: 10px 0; color: var(--secondary); }
 .result-card .value span { font-size: 1rem; color: #94a3b8; font-weight: 500; }
 
-/* 8. IMPACTE ASG */
+/* 8. ESG IMPACT */
 .impacte-asg-card {
     background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #10b981 100%);
     color: white; padding: 3rem; border-radius: var(--radius-lg); margin-top: 3rem; position: relative; overflow: hidden;
@@ -134,7 +134,7 @@ body {
 .co2-display { font-size: 4rem; font-weight: 900; line-height: 1; margin-bottom: 1rem; }
 .co2-display span { font-size: 1.5rem; opacity: 0.8; }
 
-/* 9. TIMELINE & RECOMANACIONS */
+/* 9. TIMELINE & RECOMMENDATIONS */
 .timeline { position: relative; max-width: 800px; margin: 0 auto; padding-left: 50px; }
 .timeline::before { content: ''; position: absolute; left: 20px; top: 0; width: 4px; height: 100%; background: #e2e8f0; border-radius: 10px; }
 .timeline-item { position: relative; margin-bottom: 3rem; }
@@ -150,7 +150,7 @@ body {
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 /* =========================================================================
-   10. AJUSTS RESPONSIVE (MÒBIL) - NO TREPITJA L'ANTERIOR
+   10. RESPONSIVE ADJUSTMENTS (MOBILE)
    ========================================================================= */
 @media (max-width: 768px) {
     .navbar { flex-direction: column; padding: 1rem 5%; height: auto; }
