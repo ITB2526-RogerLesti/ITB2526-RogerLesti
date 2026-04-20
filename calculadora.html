@@ -37,7 +37,7 @@
 
                 <div class="card-inputs" style="padding: 1.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-light);">
                     <label class="block text-xs font-bold text-gray-500 uppercase mb-2">🔍 View Season</label>
-                    <select id="seasonFilter" onchange="update()" class="w-full p-2 rounded-lg border-2 border-gray-200 font-bold text-gray-700 outline-none focus:border-blue-500">
+                    <select id="seasonFilter" class="w-full p-2 rounded-lg border-2 border-gray-200 font-bold text-gray-700 outline-none focus:border-blue-500">
                         <option value="all">Full Year (Total)</option>
                         <option value="winter">Winter (Dec-Feb)</option>
                         <option value="spring">Spring (Mar-May)</option>
@@ -46,9 +46,13 @@
                     </select>
                 </div>
 
-                <div class="flex gap-3 mb-6">
-                    <button onclick="generarInforme('any1')" class="btn btn-any1 flex-1">Year 1 (-12%)</button>
-                    <button onclick="generarInforme('any3')" class="btn btn-any3 flex-1">Year 3 (-30%)</button>
+                <div class="flex flex-col gap-2 mb-6">
+                    <label class="block text-xs font-bold text-gray-500 uppercase px-2">📅 Projection Horizon</label>
+                    <div class="flex gap-2">
+                        <button onclick="setProjection(0)" class="btn bg-slate-200 text-slate-700 flex-1" style="border:1px solid #cbd5e1">Current</button>
+                        <button onclick="setProjection(1)" class="btn btn-any1 flex-1">Year 1</button>
+                        <button onclick="setProjection(3)" class="btn btn-any3 flex-1">Year 3</button>
+                    </div>
                 </div>
 
                 <div class="card-inputs space-y-6">
@@ -56,40 +60,40 @@
                         <label>⚡ Electricity (kWh/day)</label>
                         <input type="number" id="baseElec" value="164.8">
                         <div class="flex justify-between mt-2">
-                            <small class="text-muted text-xs">Reduction:</small>
+                            <small class="text-muted text-xs">Yearly Effort:</small>
                             <span id="valElec" class="font-bold text-amber-500">0%</span>
                         </div>
-                        <input type="range" id="redElec" min="-50" max="100" value="0" oninput="document.getElementById('valElec').innerText = this.value + '%'; update();">
+                        <input type="range" id="redElec" min="-50" max="100" value="0" oninput="document.getElementById('valElec').innerText = this.value + '%';">
                     </div>
 
                     <div class="input-group">
                         <label>💧 Water (m³/month)</label>
                         <input type="number" id="baseAigua" value="145">
                         <div class="flex justify-between mt-2">
-                            <small class="text-muted text-xs">Reduction:</small>
+                            <small class="text-muted text-xs">Yearly Effort:</small>
                             <span id="valAigua" class="font-bold text-blue-500">0%</span>
                         </div>
-                        <input type="range" id="redAigua" min="-50" max="100" value="0" oninput="document.getElementById('valAigua').innerText = this.value + '%'; update();">
+                        <input type="range" id="redAigua" min="-50" max="100" value="0" oninput="document.getElementById('valAigua').innerText = this.value + '%';">
                     </div>
 
                     <div class="input-group">
                         <label>📄 Paper (kg/month)</label>
                         <input type="number" id="baseOficina" value="85">
                         <div class="flex justify-between mt-2">
-                            <small class="text-muted text-xs">Reduction:</small>
+                            <small class="text-muted text-xs">Yearly Effort:</small>
                             <span id="valPaper" class="font-bold text-slate-500">0%</span>
                         </div>
-                        <input type="range" id="redPaper" min="-50" max="100" value="0" oninput="document.getElementById('valPaper').innerText = this.value + '%'; update();">
+                        <input type="range" id="redPaper" min="-50" max="100" value="0" oninput="document.getElementById('valPaper').innerText = this.value + '%';">
                     </div>
 
                     <div class="input-group">
                         <label>🧼 Cleaning (L/month)</label>
                         <input type="number" id="baseNeteja" value="42">
                         <div class="flex justify-between mt-2">
-                            <small class="text-muted text-xs">Reduction:</small>
+                            <small class="text-muted text-xs">Yearly Effort:</small>
                             <span id="valNeteja" class="font-bold text-pink-500">0%</span>
                         </div>
-                        <input type="range" id="redNeteja" min="-50" max="100" value="0" oninput="document.getElementById('valNeteja').innerText = this.value + '%'; update();">
+                        <input type="range" id="redNeteja" min="-50" max="100" value="0" oninput="document.getElementById('valNeteja').innerText = this.value + '%';">
                     </div>
                 </div>
             </aside>
@@ -110,7 +114,7 @@
                 <div class="impacte-asg-card">
                     <span class="asg-badge">Total Carbon Footprint</span>
                     <div class="co2-display" id="co2-val">0 <span>kg CO2</span></div>
-                    <p>Estimated impact based on selected filters and reductions.</p>
+                    <p>Estimated impact based on selected filters and cumulative reductions over time.</p>
                 </div>
             </section>
         </div>
