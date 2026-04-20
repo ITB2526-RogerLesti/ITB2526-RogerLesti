@@ -6,37 +6,13 @@
     <title>Calculator - ITB Sustainable</title>
 
     <link rel="stylesheet" href="css/style.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            corePlugins: { preflight: false }
-        }
+        tailwind.config = { corePlugins: { preflight: false } }
     </script>
-
-    <style>
-        .input-card {
-            background: #ffffff;
-            padding: 1.5rem;
-            border-radius: 1.5rem;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        input[type="range"] {
-            width: 100%;
-            accent-color: #10b981;
-            cursor: pointer;
-        }
-        .btn-plan {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .btn-plan:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-    </style>
 </head>
-<body style="background-color: #f3f4f6; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
+<body>
 
     <nav class="navbar">
         <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SUSTAINABLE</span></div>
@@ -47,78 +23,104 @@
         </div>
     </nav>
 
-    <div class="p-4 md:p-8">
-        <div class="max-w-6xl mx-auto space-y-8">
+    <main class="container">
+        <header class="page-header">
+            <div class="badge-percent green">Simulation Engine</div>
+            <h1>Interactive Savings Calculator</h1>
+            <p>Simulate consumption reductions and see the seasonal impact in real-time.</p>
+        </header>
 
-            <header class="bg-gradient-to-r from-emerald-600 to-teal-700 p-10 rounded-[2.5rem] text-white shadow-xl">
-                <h1 class="text-3xl md:text-5xl font-extrabold mb-2 text-white">Interactive Savings Calculator</h1>
-                <p class="text-emerald-50 text-lg opacity-90">Simulate consumption reductions and see the environmental impact in real-time.</p>
-            </header>
+        <div class="grid lg:grid-cols-3 gap-8">
 
-            <div class="grid lg:grid-cols-3 gap-8">
+            <aside class="space-y-6">
+                <h2 class="text-xl font-bold px-2">Adjust Parameters</h2>
 
-                <div class="lg:col-span-1 space-y-6">
-                    <h2 class="text-xl font-bold text-gray-800 px-2">Adjust Parameters</h2>
+                <div class="card-inputs" style="padding: 1.5rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-light);">
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-2">🔍 View Season</label>
+                    <select id="seasonFilter" onchange="update()" class="w-full p-2 rounded-lg border-2 border-gray-200 font-bold text-gray-700 outline-none focus:border-blue-500">
+                        <option value="all">Full Year (Total)</option>
+                        <option value="winter">Winter (Dec-Feb)</option>
+                        <option value="spring">Spring (Mar-May)</option>
+                        <option value="summer">Summer (Jun-Aug)</option>
+                        <option value="autumn">Autumn (Sep-Nov)</option>
+                    </select>
+                </div>
 
-                    <div class="flex gap-3 mb-6">
-                        <div onclick="generarInforme('any1')" class="btn-plan flex-1 bg-blue-600 text-white p-3 rounded-xl text-center font-bold text-sm shadow-lg">Year 1 (-12%)</div>
-                        <div onclick="generarInforme('any3')" class="btn-plan flex-1 bg-emerald-600 text-white p-3 rounded-xl text-center font-bold text-sm shadow-lg">Year 3 (-30%)</div>
+                <div class="flex gap-3 mb-6">
+                    <button onclick="generarInforme('any1')" class="btn btn-any1 flex-1">Year 1 (-12%)</button>
+                    <button onclick="generarInforme('any3')" class="btn btn-any3 flex-1">Year 3 (-30%)</button>
+                </div>
+
+                <div class="card-inputs space-y-6">
+                    <div class="input-group">
+                        <label>⚡ Electricity (kWh/day)</label>
+                        <input type="number" id="baseElec" value="164.8">
+                        <div class="flex justify-between mt-2">
+                            <small class="text-muted text-xs">Reduction:</small>
+                            <span id="valElec" class="font-bold text-amber-500">0%</span>
+                        </div>
+                        <input type="range" id="redElec" min="-50" max="100" value="0" oninput="document.getElementById('valElec').innerText = this.value + '%'; update();">
                     </div>
 
-                    <div class="input-card">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">⚡ Electricity (kWh/day)</label>
-                        <input type="number" id="baseElec" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="164.8">
-                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valElec" class="text-yellow-600">0%</span></label>
-                        <input type="range" id="redElec" min="-50" max="100" value="0" oninput="document.getElementById('valElec').innerText = this.value + '%'">
+                    <div class="input-group">
+                        <label>💧 Water (m³/month)</label>
+                        <input type="number" id="baseAigua" value="145">
+                        <div class="flex justify-between mt-2">
+                            <small class="text-muted text-xs">Reduction:</small>
+                            <span id="valAigua" class="font-bold text-blue-500">0%</span>
+                        </div>
+                        <input type="range" id="redAigua" min="-50" max="100" value="0" oninput="document.getElementById('valAigua').innerText = this.value + '%'; update();">
                     </div>
 
-                    <div class="input-card">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">💧 Water (m³/month)</label>
-                        <input type="number" id="baseAigua" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="145">
-                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valAigua" class="text-blue-600">0%</span></label>
-                        <input type="range" id="redAigua" min="-50" max="100" value="0" oninput="document.getElementById('valAigua').innerText = this.value + '%'">
+                    <div class="input-group">
+                        <label>📄 Paper (kg/month)</label>
+                        <input type="number" id="baseOficina" value="85">
+                        <div class="flex justify-between mt-2">
+                            <small class="text-muted text-xs">Reduction:</small>
+                            <span id="valPaper" class="font-bold text-slate-500">0%</span>
+                        </div>
+                        <input type="range" id="redPaper" min="-50" max="100" value="0" oninput="document.getElementById('valPaper').innerText = this.value + '%'; update();">
                     </div>
 
-                    <div class="input-card">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">📄 Paper (kg/month)</label>
-                        <input type="number" id="baseOficina" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="85">
-                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valPaper" class="text-slate-500">0%</span></label>
-                        <input type="range" id="redPaper" min="-50" max="100" value="0" oninput="document.getElementById('valPaper').innerText = this.value + '%'">
+                    <div class="input-group">
+                        <label>🧼 Cleaning (L/month)</label>
+                        <input type="number" id="baseNeteja" value="42">
+                        <div class="flex justify-between mt-2">
+                            <small class="text-muted text-xs">Reduction:</small>
+                            <span id="valNeteja" class="font-bold text-pink-500">0%</span>
+                        </div>
+                        <input type="range" id="redNeteja" min="-50" max="100" value="0" oninput="document.getElementById('valNeteja').innerText = this.value + '%'; update();">
                     </div>
+                </div>
+            </aside>
 
-                    <div class="input-card">
-                        <label class="block text-sm font-bold text-gray-700 mb-2">🧼 Cleaning (L/month)</label>
-                        <input type="number" id="baseNeteja" class="w-full p-2 border rounded-lg mb-4 text-gray-700 font-bold" value="42">
-                        <label class="block text-xs font-semibold text-gray-500 mb-2">Target Reduction: <span id="valNeteja" class="text-pink-600">0%</span></label>
-                        <input type="range" id="redNeteja" min="-50" max="100" value="0" oninput="document.getElementById('valNeteja').innerText = this.value + '%'">
+            <section class="lg:col-span-2 space-y-8">
+                <div class="card-inputs">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 id="titol-resultats" class="text-2xl font-bold text-gray-800 m-0">Consumption Forecast</h2>
+                        <span class="badge-percent blue">LIVE DATA</span>
+                    </div>
+                    <div style="position: relative; height:400px; width:100%">
+                        <canvas id="graficConsum"></canvas>
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 space-y-8">
+                <div id="grid-resultats" class="grid-resultats"></div>
 
-                    <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-xl border border-gray-100">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 id="titol-resultats" class="text-2xl font-bold text-gray-800 m-0">Consumption Forecast</h2>
-                            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold">LIVE CHART</span>
-                        </div>
-                        <div style="position: relative; height:45vh; width:100%">
-                            <canvas id="graficConsum"></canvas>
-                        </div>
-                    </div>
-
-                    <div id="grid-resultats" class="grid md:grid-cols-2 gap-4">
-                        </div>
+                <div class="impacte-asg-card">
+                    <span class="asg-badge">Total Carbon Footprint</span>
+                    <div class="co2-display" id="co2-val">0 <span>kg CO2</span></div>
+                    <p>Estimated impact based on selected filters and reductions.</p>
                 </div>
-            </div>
-
-            <footer class="text-center text-gray-400 text-sm py-10">
-                ITB Sustainability Project | 2026 | Group 7
-            </footer>
+            </section>
         </div>
-    </div>
+
+        <footer class="page-header mt-12">
+            <p class="text-gray-400 text-sm">ITB Sustainability Project | 2026 | Group 7</p>
+        </footer>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/calculadora.js"></script>
-
 </body>
 </html>

@@ -1,54 +1,58 @@
 /* =========================================================================
-   SUSTAINABILITY CALCULATOR - PHASE 3 (INTERACTIVE & RESPONSIVE)
-   Designed by: Group 7
+   SUSTAINABILITY CALCULATOR - PHASE 3 (INTEGRATED SEASONAL FILTERS & COMPARISON)
+   Designed by: Group 7 (Walid & Roger)
    ========================================================================= */
 
-const MESOS_CURS = [8, 9, 10, 11, 0, 1, 2, 3, 4, 5]; // School months (Sept-June)
+const MESOS_NOMS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const FACTORS_CO2 = { elec: 0.25, aigua: 0.91, paper: 1.2, neteja: 1.5 };
-const PREU_KWH_BASE = 0.18; // Base price €/kWh
+const PREU_KWH_BASE = 0.18; // Precio base €/kWh para coste
 
-let consumChart = null; // Chart.js instance
+let consumChart = null;
 
 /**
- * Initializes the calculator with default diagnostic values
+ * Función segura de inicialización.
+ * Se asegura de que el HTML esté listo antes de intentar dibujar nada.
  */
-async function inicialitzarCalculadora() {
-    // Initial diagnostic base values
-    document.getElementById('baseElec').value = 164.8;
-    document.getElementById('baseAigua').value = 145;
-    document.getElementById('baseOficina').value = 85;
-    document.getElementById('baseNeteja').value = 42;
+function inicialitzarCalculadora() {
+    console.log("Initializing simulator...");
 
-    // Setting default reduction values to 0
-    ['redElec', 'redAigua', 'redPaper', 'redNeteja'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = 0;
-    });
-
-    // Listeners for real-time updates on ALL inputs
-    const ids = [
+    // 1. Vinculamos los eventos de escucha a todos los inputs
+    const idsEscucha = [
         'baseElec', 'baseAigua', 'baseOficina', 'baseNeteja',
-        'redElec', 'redAigua', 'redPaper', 'redNeteja'
+        'redElec', 'redAigua', 'redPaper', 'redNeteja', 'seasonFilter'
     ];
 
-    ids.forEach(id => {
+    idsEscucha.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-            el.addEventListener('input', () => generarInforme('custom'));
+            // "change" para el select, "input" para los sliders y números
+            const evento = el.tagName === 'SELECT' ? 'change' : 'input';
+            el.addEventListener(evento, updateSimulator);
+        } else {
+            console.warn(`Warning: Element with id '${id}' not found.`);
         }
     });
 
-    generarInforme(false);
+    // 2. Ejecutamos la primera carga del simulador
+    updateSimulator();
 }
 
 /**
- * Main logic to calculate consumption and update visuals
+ * Función principal que orquesta el cálculo y la actualización visual.
  */
-function generarInforme(mode) {
-    let title = "📊 Interactive Sustainability Calculator";
+function updateSimulator() {
+    const season = document.getElementById('seasonFilter').value;
+    // Por defecto modo 'custom' para que lea los sliders
+    generarInforme('custom', season);
+}
+
+/**
+ * Procesa los datos y genera los informes (Gráfico y Tarjetas).
+ */
+function generarInforme(mode, season = 'all') {
     let yearsCPI = 0;
 
-    // 1. Get Base Values (Daily/Monthly)
+    // 1. Obtener valores Base (Diarios/Mensuales)
     const vBase = {
         elec: parseFloat(document.getElementById('baseElec').value) || 0,
         aigua: parseFloat(document.getElementById('baseAigua').value) || 0,
@@ -56,8 +60,7 @@ function generarInforme(mode) {
         neteja: parseFloat(document.getElementById('baseNeteja').value) || 0
     };
 
-    // 2. Logic for Individual Reductions
-    // If user inputs 10 in redAigua, multiplier becomes 0.90 (10% less)
+    // 2. Obtener multiplicadores de reducción de los sliders
     let red = {
         elec: (100 - (parseFloat(document.getElementById('redElec')?.value) || 0)) / 100,
         aigua: (100 - (parseFloat(document.getElementById('redAigua')?.value) || 0)) / 100,
@@ -65,90 +68,100 @@ function generarInforme(mode) {
         neteja: (100 - (parseFloat(document.getElementById('redNeteja')?.value) || 0)) / 100
     };
 
-    // 3. Preset Button Logic (Global Reductions)
-    if (mode === 'any1') {
-        Object.keys(red).forEach(k => red[k] = 0.88);
-        title = "📈 Year 1 Plan (-12% Global)";
-        yearsCPI = 1;
-    } else if (mode === 'any3') {
-        Object.keys(red).forEach(k => red[k] = 0.70);
-        title = "🌱 Year 3 Plan (-30% Global)";
-        yearsCPI = 3;
-    } else if (mode === 'custom') {
-        title = "⚙️ Custom Savings Scenario";
-    }
+    // Lógica para los botones de preset (Año 1 / Año 3) si se usaran
+    if (mode === 'any1') { Object.keys(red).forEach(k => red[k] = 0.88); yearsCPI = 1; }
+    if (mode === 'any3') { Object.keys(red).forEach(k => red[k] = 0.70); yearsCPI = 3; }
 
-    const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const seasonalFactors = [1.2, 1.1, 1.0, 0.5, 1.0, 0.8, 0.3, 0.1, 1.0, 1.1, 1.2, 0.6];
 
-    const totals = {
-        elec: { any: 0, curs: 0 },
-        aigua: { any: 0, curs: 0 },
-        paper: { any: 0, curs: 0 },
-        neteja: { any: 0, curs: 0 }
-    };
+    // 3. Definir qué meses procesar según el filtro estacional
+    let indicesMesos = [];
+    switch(season) {
+        case 'winter': indicesMesos = [11, 0, 1]; break; // Dic, Ene, Feb
+        case 'spring': indicesMesos = [2, 3, 4]; break;  // Mar, Abr, May
+        case 'summer': indicesMesos = [5, 6, 7]; break;  // Jun, Jul, Ago
+        case 'autumn': indicesMesos = [8, 9, 10]; break; // Sep, Oct, Nov
+        default: indicesMesos = [0,1,2,3,4,5,6,7,8,9,10,11]; // Todo el año
+    }
 
-    // Data arrays for the 5-line graph
-    let dElec = [], dAigua = [], dPaper = [], dNeteja = [], dCost = [];
+    let labels = [], dElec = [], dAigua = [], dPaper = [], dNeteja = [], dCost = [];
+    let totalAcumulado = { elec: 0, aigua: 0, paper: 0, neteja: 0 };
 
-    seasonalFactors.forEach((factor, i) => {
-        // Apply seasonal factor AND user-defined reduction/increase
-        const e = (vBase.elec * 30) * factor * red.elec;
+    // 4. Bucle de cálculo mensual
+    indicesMesos.forEach(i => {
+        const factor = seasonalFactors[i];
+
+        // Aplicamos factor estacional Y reducción del slider
+        const e = (vBase.elec * 30) * factor * red.elec; // Elec base es diaria (*30)
         const a = vBase.aigua * factor * red.aigua;
         const p = vBase.paper * factor * red.paper;
         const n = vBase.neteja * factor * red.neteja;
 
-        // Calculate cost based on Electricity with 3% annual CPI
-        const updatedPrice = PREU_KWH_BASE * Math.pow(1.03, yearsCPI);
-        const monthlyCost = e * updatedPrice;
+        // Cálculo de coste (solo Elec para simplificar) con IPC del 3% anual
+        const cost = e * (PREU_KWH_BASE * Math.pow(1.03, yearsCPI));
 
-        // Populate Graph Arrays
+        // Guardar datos para el gráfico
+        labels.push(MESOS_NOMS[i]);
         dElec.push(e.toFixed(0));
         dAigua.push(a.toFixed(0));
         dPaper.push(p.toFixed(0));
         dNeteja.push(n.toFixed(0));
-        dCost.push(monthlyCost.toFixed(2));
+        dCost.push(cost.toFixed(2));
 
-        // Aggregate Totals
-        totals.elec.any += e; totals.aigua.any += a;
-        totals.paper.any += p; totals.neteja.any += n;
-
-        if (MESOS_CURS.includes(i)) {
-            totals.elec.curs += e; totals.aigua.curs += a;
-            totals.paper.curs += p; totals.neteja.curs += n;
-        }
+        // Acumular totales para las tarjetas
+        totalAcumulado.elec += e;
+        totalAcumulado.aigua += a;
+        totalAcumulado.paper += p;
+        totalAcumulado.neteja += n;
     });
 
-    const totalCO2 = (totals.elec.any * FACTORS_CO2.elec) + (totals.aigua.any * FACTORS_CO2.aigua);
-
-    // Update visuals
+    // 5. Actualizar los elementos visuales de forma segura
     dibuixarGrafic(labels, dElec, dAigua, dPaper, dNeteja, dCost);
-    renderitza(totals, title, totalCO2, mode !== false);
+    renderCards(totalAcumulado, season);
 }
 
 /**
- * Renders the multi-line chart using Chart.js
+ * Dibuja el gráfico multi-línea.
+ * Se asegura de que el canvas exista antes de intentar dibujar.
  */
 function dibuixarGrafic(labels, dElec, dAigua, dPaper, dNeteja, dCost) {
-    const ctx = document.getElementById('graficConsum').getContext('2d');
+    const canvas = document.getElementById('graficConsum');
+
+    // Comprobación de seguridad: si el canvas no existe en el DOM, no hacemos nada.
+    if (!canvas) {
+        console.error("Error: Canvas element 'graficConsum' not found. Cannot draw chart.");
+        return;
+    }
+
+    const ctx = canvas.getContext('2d');
+
+    // Si ya existe un gráfico, lo destruimos para evitar superposiciones
     if (consumChart) consumChart.destroy();
+
+    // Colores basados en tu imagen de referencia
+    const colorElec = '#facc15'; // Amarillo
+    const colorAigua = '#3b82f6'; // Azul
+    const colorPaper = '#94a3b8'; // Gris
+    const colorNeteja = '#f472b6'; // Rosa
+    const colorCost = '#10b981'; // Verde
 
     consumChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [
-                { label: 'Electricity (kWh)', data: dElec, borderColor: '#facc15', backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Water (m³)', data: dAigua, borderColor: '#3b82f6', backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Paper (kg)', data: dPaper, borderColor: '#94a3b8', borderDash: [5, 5], backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Cleaning (L)', data: dNeteja, borderColor: '#f472b6', backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Total Cost (€)', data: dCost, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, yAxisID: 'y1' }
+                { label: 'Elec (kWh)', data: dElec, borderColor: colorElec, backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
+                { label: 'Water (m³)', data: dAigua, borderColor: colorAigua, backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
+                { label: 'Paper (kg)', data: dPaper, borderColor: colorPaper, borderDash: [5, 5], backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
+                { label: 'Cleaning (L)', data: dNeteja, borderColor: colorNeteja, backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
+                { label: 'Total Cost (€)', data: dCost, borderColor: colorCost, backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, yAxisID: 'y1' }
             ]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false, // Importante para que respete el alto del contenedor CSS
             scales: {
-                y: { type: 'linear', position: 'left', title: { display: true, text: 'Quantity (Units)' } },
+                y: { type: 'linear', position: 'left', title: { display: true, text: 'Units' } },
                 y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Monthly Cost (€)' } }
             }
         }
@@ -156,42 +169,64 @@ function dibuixarGrafic(labels, dElec, dAigua, dPaper, dNeteja, dCost) {
 }
 
 /**
- * Updates the summary cards in the HTML
+ * Genera las tarjetas de resultados con la comparativa Anual vs Escolar.
+ * Añade los iconos de electricidad, agua, papel y limpieza.
  */
-function renderitza(res, title, co2, isScenario) {
+function renderCards(res, seasonName) {
     const container = document.getElementById('grid-resultats');
-    const titleEl = document.getElementById('titol-resultats');
-    if (titleEl) titleEl.innerText = title;
+    const co2Display = document.getElementById('co2-val');
 
-    const config = {
-        elec: { n: 'Electricity', u: 'kWh', i: '⚡', c: '#facc15' },
-        aigua: { n: 'Water', u: 'm³', i: '💧', c: '#3b82f6' },
-        paper: { n: 'Paper', u: 'kg', i: '📄', c: '#94a3b8' },
-        neteja: { n: 'Cleaning', u: 'L', i: '🧼', c: '#f472b6' }
-    };
+    if (!container) return; // Comprobación de seguridad
 
-    let html = '';
-    Object.keys(res).forEach(key => {
-        const conf = config[key];
-        html += `
-        <div style="background:white; padding:1.2rem; border-radius:12px; margin-bottom:1rem; border-left:6px solid ${conf.c}; box-shadow:0 2px 5px rgba(0,0,0,0.1)">
-            <h3 style="margin-top:0; color:${conf.c}">${conf.i} ${conf.n}</h3>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
-                <div><small style="color:#64748b">ANNUAL TOTAL</small><br><strong style="font-size:1.2rem; color:#1e293b">${res[key].any.toFixed(0)} ${conf.u}</strong></div>
-                <div><small style="color:#166534">SCHOOL YEAR</small><br><strong style="font-size:1.2rem; color:#166534">${res[key].curs.toFixed(0)} ${conf.u}</strong></div>
+    const labelExt = seasonName === 'all' ? 'Annual' : 'Seasonal';
+
+    // Cálculo CO2 simplificado basado en Elec y Agua
+    const co2Total = (res.elec * FACTORS_CO2.elec) + (res.aigua * FACTORS_CO2.aigua);
+    if(co2Display) co2Display.innerHTML = `${(co2Total/1000).toFixed(2)} <span>tons CO2 (${labelExt})</span>`;
+
+    // Configuración de los recursos con sus iconos
+    const items = [
+        { n: 'Electricity', v: res.elec, u: 'kWh', c: '#facc15', img: '⚡' },
+        { n: 'Water', v: res.aigua, u: 'm³', c: '#3b82f6', img: '💧' },
+        { n: 'Paper', v: res.paper, u: 'kg', c: '#94a3b8', img: '📄' },
+        { n: 'Cleaning', v: res.neteja, u: 'L', c: '#f472b6', img: '🧼' }
+    ];
+
+    // Limpiamos y generamos el HTML
+    container.innerHTML = items.map(item => {
+        // Cálculo del ciclo escolar (aprox 10 meses lectivos si es anual, o proporcional)
+        const schoolUsage = seasonName === 'all' ? item.v * (10/12) : item.v * 0.90;
+
+        return `
+        <div class="result-card" style="border-bottom-color: ${item.c}; display: flex; align-items: center; gap: 15px;">
+            <div style="font-size: 2.5rem; background: rgba(0,0,0,0.03); padding: 10px; border-radius: 12px;">
+                ${item.img}
             </div>
-        </div>`;
-    });
 
-    // CO2 Footprint Summary Card
-    html += `
-    <div style="background:linear-gradient(135deg,#1e3a8a,#10b981); color:white; padding:1.5rem; border-radius:12px; text-align:center; margin-top:1rem;">
-        <div style="font-size:1.8rem; font-weight:900">${(co2/1000).toFixed(2)} Tons CO2 / Year</div>
-        <p style="margin:0; font-size:0.8rem; opacity:0.8">${isScenario ? 'Impact based on custom reductions and CPI' : 'Baseline environmental impact'}</p>
-    </div>`;
+            <div style="flex-grow: 1;">
+                <h4 style="margin: 0; color: #64748b; font-size: 0.75rem; text-transform: uppercase;">${item.n}</h4>
 
-    if (container) container.innerHTML = html;
+                <div style="display: flex; gap: 20px; margin-top: 8px;">
+                    <div>
+                        <div style="font-size: 0.6rem; color: #94a3b8; font-weight: bold;">TOTAL</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: var(--secondary);">
+                            ${Math.round(item.v).toLocaleString()} <small style="font-size: 0.8rem; color: #94a3b8;">${item.u}</small>
+                        </div>
+                    </div>
+
+                    <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
+                        <div style="font-size: 0.6rem; color: var(--eco-green); font-weight: bold;">SCHOOL USE</div>
+                        <div style="font-size: 1.4rem; font-weight: 800; color: var(--secondary);">
+                            ${Math.round(schoolUsage).toLocaleString()} <small style="font-size: 0.8rem; color: #94a3b8;">${item.u}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
 }
 
-// Global initialization
+// Vinculamos la inicialización al evento onload del navegador.
+// Esto soluciona el problema de que el gráfico no cargue a veces.
 window.onload = inicialitzarCalculadora;
