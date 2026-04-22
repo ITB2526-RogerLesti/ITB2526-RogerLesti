@@ -3,187 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis - ITB Sustainable</title>
-
+    <title>ESG Analysis — ITB Sustainable</title>
     <link rel="stylesheet" href="css/style.css">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            corePlugins: {
-                preflight: false, // Prevents conflicts with style.css
-            }
-        }
-    </script>
-
-    <style>
-        .card-info {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .card-info:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        .step-number {
-            background: var(--eco-green);
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body style="background-color: #f3f4f6; margin: 0; padding: 0; font-family: 'Inter', sans-serif;">
+<body>
 
-    <nav class="navbar">
-        <div class="logo">🌍 ITB <span style="color: var(--eco-green)">SUSTAINABLE</span></div>
-        <div class="nav-links">
-            <a href="index.html" class="nav-item active">Analysis</a>
-            <a href="calculadora.html" class="nav-item">Calculator</a>
-            <a href="recomanacions.html" class="nav-item">Plan -30%</a>
-        </div>
-    </nav>
-
-    <div class="p-4 md:p-8">
-        <div class="max-w-6xl mx-auto bg-white shadow-2xl rounded-3xl overflow-hidden border border-gray-100">
-
-            <header class="bg-gradient-to-r from-blue-900 to-indigo-800 p-10 text-white text-center">
-                <div class="inline-block bg-green-500/20 text-green-300 px-4 py-1 rounded-full text-sm font-bold mb-4 uppercase tracking-widest">
-                    Phases 1 & 2: ESG Diagnosis
-                </div>
-                <h1 class="text-3xl md:text-5xl font-extrabold mb-4 text-white">Sustainability Plan Analysis</h1>
-                <p class="text-blue-100 text-lg m-0 opacity-90">In-depth analysis of environmental impact and Big Tech comparison</p>
-                <div class="flex justify-center gap-4 mt-6">
-                    <span class="bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-xl text-sm font-medium">Group 7: Walid & Roger</span>
-                </div>
-            </header>
-
-            <div class="p-6 md:p-10 space-y-12">
-
-                <section>
-                    <div class="flex items-center gap-4 mb-8">
-                        <div class="p-3 bg-blue-100 rounded-2xl text-blue-700">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <h2 class="text-2xl font-bold text-gray-800 m-0">ITB Sustainability Analysis</h2>
-                    </div>
-
-                    <div class="grid md:grid-cols-3 gap-6">
-                        <div class="card-info bg-emerald-50 p-6 rounded-2xl border border-emerald-100">
-                            <h3 class="font-bold text-emerald-800 mb-4 flex items-center gap-2 m-0 text-lg">🌿 Environmental (E)</h3>
-                            <ul class="text-sm text-emerald-900 space-y-3 m-0 p-0 list-none">
-                                <li class="flex items-start gap-2"><span>•</span> <span>High electricity consumption in systems classrooms and servers.</span></li>
-                                <li class="flex items-start gap-2"><span>•</span> <span>Generation of electronic waste (e-waste) due to obsolete hardware.</span></li>
-                            </ul>
-                        </div>
-                        <div class="card-info bg-blue-50 p-6 rounded-2xl border border-blue-100">
-                            <h3 class="font-bold text-blue-800 mb-4 flex items-center gap-2 m-0 text-lg">👥 Social (S)</h3>
-                            <ul class="text-sm text-blue-900 space-y-3 m-0 p-0 list-none">
-                                <li class="flex items-start gap-2"><span>•</span> <span>Student ergonomics and digital eye strain.</span></li>
-                                <li class="flex items-start gap-2"><span>•</span> <span>Inclusion by reducing the digital divide.</span></li>
-                            </ul>
-                        </div>
-                        <div class="card-info bg-purple-50 p-6 rounded-2xl border border-purple-100">
-                            <h3 class="font-bold text-purple-800 mb-4 flex items-center gap-2 m-0 text-lg">⚖️ Governance (G)</h3>
-                            <ul class="text-sm text-purple-900 space-y-3 m-0 p-0 list-none">
-                                <li class="flex items-start gap-2"><span>•</span> <span>Ethics in data management and privacy.</span></li>
-                                <li class="flex items-start gap-2"><span>•</span> <span>Promotion of Free Software (Open Source) at the center.</span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-slate-50 p-8 rounded-3xl border border-slate-200 shadow-inner">
-                    <h2 class="text-xl font-bold text-gray-800 mb-8 flex items-center gap-3 m-0">
-                        <div class="p-2 bg-amber-100 text-amber-700 rounded-lg">♻️</div>
-                        WEEE Waste Management (RD 110/2015)
-                    </h2>
-                    <div class="flex flex-col md:flex-row justify-between gap-8">
-                        <div class="flex-1 text-center group">
-                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">1</div>
-                            <h4 class="font-bold text-gray-800 m-0">Selective Collection</h4>
-                            <p class="text-sm text-gray-600 mt-3">Strict separation of cables, screens, and boards. Never mixed with common waste.</p>
-                        </div>
-                        <div class="flex-1 text-center group">
-                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">2</div>
-                            <h4 class="font-bold text-gray-800 m-0">Secure Storage</h4>
-                            <p class="text-sm text-gray-600 mt-3">Dry spaces for batteries. Avoid dismantling without protection.</p>
-                        </div>
-                        <div class="flex-1 text-center group">
-                            <div class="step-number mx-auto mb-4 group-hover:scale-110 transition-transform">3</div>
-                            <h4 class="font-bold text-gray-800 m-0">Certified Management</h4>
-                            <p class="text-sm text-gray-600 mt-3">Delivery to authorized managers for legal traceability.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <section>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3 m-0">
-                        <div class="p-2 bg-indigo-100 text-indigo-700 rounded-lg">📊</div>
-                        Big Tech Comparison & Critique
-                    </h2>
-                    <div class="overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
-                        <table class="w-full text-left border-collapse bg-white m-0">
-                            <thead class="bg-slate-800 text-white uppercase text-xs">
-                                <tr>
-                                    <th class="p-5">Company</th>
-                                    <th class="p-5">Commitment</th>
-                                    <th class="p-5">Improvement Proposal (Group 7)</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-sm text-gray-600">
-                                <tr class="border-b hover:bg-gray-50 transition-colors">
-                                    <td class="p-5 font-bold text-gray-900">Microsoft</td>
-                                    <td class="p-5">Carbon Negative by 2030.</td>
-                                    <td class="p-5 bg-orange-50/50 italic text-orange-800">Extend hardware support for older OS.</td>
-                                </tr>
-                                <tr class="border-b hover:bg-gray-50 transition-colors">
-                                    <td class="p-5 font-bold text-gray-900">Google</td>
-                                    <td class="p-5">24/7 Carbon-Free Energy.</td>
-                                    <td class="p-5 bg-orange-50/50 italic text-orange-800">Radical AI energy efficiency optimization.</td>
-                                </tr>
-                                <tr class="border-b hover:bg-gray-50 transition-colors">
-                                    <td class="p-5 font-bold text-gray-900">Amazon</td>
-                                    <td class="p-5">Net-zero carbon by 2040.</td>
-                                    <td class="p-5 bg-orange-50/50 italic text-orange-800">Optimize "Last Mile" logistics for zero emissions.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
-
-                <div class="bg-gradient-to-br from-emerald-500 to-teal-700 p-10 rounded-[2rem] text-white shadow-2xl relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-125 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-2xl font-bold mb-4 flex items-center gap-3 text-white m-0">
-                        💡 Our Strategic Proposal
-                    </h3>
-                    <p class="text-xl leading-relaxed m-0 text-emerald-50 font-medium">
-                        Implementation of the <strong>"Reuse Workshop"</strong>: A student-managed laboratory to repair ITB hardware.
-                        This promotes the <strong>"Right to Repair"</strong> and directly reduces the center's carbon footprint.
-                    </p>
-                    <div class="mt-8">
-                        <a href="calculadora.html" class="inline-block bg-white text-emerald-700 px-6 py-3 rounded-xl font-bold hover:bg-emerald-50 transition-colors no-underline">Try Savings Calculation →</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <footer class="bg-gray-50 p-8 text-center text-gray-500 text-sm border-t border-gray-200 m-0">
-                ITB Sustainability Project | 2026 | Walid & Roger | Group 7
-            </footer>
-        </div>
+<nav class="navbar">
+    <a href="index.html" class="logo">🌍 ITB <span class="logo-accent">SUSTAINABLE</span></a>
+    <div class="nav-links">
+        <a href="index.html" class="active">Analysis</a>
+        <a href="calculadora.html">Calculator</a>
+        <a href="plan-30.html">Plan −30%</a>
     </div>
+</nav>
+
+<div class="analysis-shell">
+
+    <!-- HERO -->
+    <header class="analysis-hero">
+        <div class="hero-phase-tag">Phases 1 &amp; 2 · ESG Diagnostic</div>
+        <h1>Sustainability Plan Analysis</h1>
+        <p class="subtitle">In-depth environmental impact assessment and Big Tech sustainability comparison</p>
+        <span class="group-chip">Group 7 · Walid &amp; Roger</span>
+    </header>
+
+    <!-- BODY -->
+    <div class="analysis-body">
+
+        <!-- ESG FRAMEWORK -->
+        <section>
+            <div class="section-hd">
+                <div class="icon-chip ic-blue">🛡️</div>
+                <h2>ITB Sustainability Assessment</h2>
+            </div>
+            <div class="esg-grid">
+                <div class="esg-card env">
+                    <h3>🌿 Environmental (E)</h3>
+                    <ul>
+                        <li><span>•</span><span>High electricity consumption in IT classrooms and server rooms.</span></li>
+                        <li><span>•</span><span>Electronic waste (e-waste) generation from obsolete hardware.</span></li>
+                    </ul>
+                </div>
+                <div class="esg-card soc">
+                    <h3>👥 Social (S)</h3>
+                    <ul>
+                        <li><span>•</span><span>Student ergonomics and digital eye strain management.</span></li>
+                        <li><span>•</span><span>Inclusion through reduction of the digital divide.</span></li>
+                    </ul>
+                </div>
+                <div class="esg-card gov">
+                    <h3>⚖️ Governance (G)</h3>
+                    <ul>
+                        <li><span>•</span><span>Ethical data management and student privacy protocols.</span></li>
+                        <li><span>•</span><span>Promotion of open-source software across the institution.</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- WEEE -->
+        <div class="weee-panel">
+            <div class="section-hd">
+                <div class="icon-chip ic-amber">♻️</div>
+                <h2>WEEE Waste Management (RD 110/2015)</h2>
+            </div>
+            <div class="weee-steps">
+                <div class="weee-step">
+                    <div class="step-num">1</div>
+                    <div>
+                        <h4>Selective Collection</h4>
+                        <p>Strict separation of cables, screens and circuit boards. Never in general waste.</p>
+                    </div>
+                </div>
+                <div class="weee-step">
+                    <div class="step-num">2</div>
+                    <div>
+                        <h4>Safe Storage</h4>
+                        <p>Dry storage areas for batteries. Avoid disassembly without proper protective equipment.</p>
+                    </div>
+                </div>
+                <div class="weee-step">
+                    <div class="step-num">3</div>
+                    <div>
+                        <h4>Certified Disposal</h4>
+                        <p>Hand over to authorised waste managers to ensure full legal traceability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BIG TECH COMPARISON -->
+        <section>
+            <div class="section-hd">
+                <div class="icon-chip ic-purple">📊</div>
+                <h2>Big Tech Sustainability Comparison &amp; Critique</h2>
+            </div>
+            <div class="tbl-wrap">
+                <table class="cmp-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Sustainability Commitment</th>
+                            <th>Group 7 Improvement Proposal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="td-company">Microsoft</td>
+                            <td>Carbon Negative by 2030; Water Positive by 2030.</td>
+                            <td class="td-proposal">Extend hardware support cycles to reduce forced device obsolescence.</td>
+                        </tr>
+                        <tr>
+                            <td class="td-company">Google</td>
+                            <td>24/7 Carbon-Free Energy across all operations.</td>
+                            <td class="td-proposal">Radical AI workload energy efficiency — optimise inference costs.</td>
+                        </tr>
+                        <tr>
+                            <td class="td-company">Amazon</td>
+                            <td>The Climate Pledge — Net-zero carbon by 2040.</td>
+                            <td class="td-proposal">Drastically reduce single-use plastic &amp; cardboard in small shipments.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="cta-band">
+            <h3>💡 Our Strategic Proposal</h3>
+            <p>
+                We propose the <strong>"Reuse Workshop"</strong>: a student-managed repair lab where ITB hardware is
+                diagnosed, fixed and returned to service. This directly applies the <strong>Right to Repair</strong>
+                principle, extends asset lifecycles and measurably reduces the institution's carbon footprint.
+            </p>
+            <a href="calculadora.html" class="cta-btn">Try the Savings Calculator →</a>
+        </div>
+
+    </div><!-- /analysis-body -->
+
+    <footer class="analysis-footer">
+        ITB Sustainability Project · 2026 · Walid &amp; Roger · Group 7
+    </footer>
+
+</div><!-- /analysis-shell -->
 
 </body>
 </html>

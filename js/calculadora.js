@@ -1,203 +1,245 @@
-/* =========================================================================
-   SUSTAINABILITY CALCULATOR - PHASE 4 (MULTI-YEAR PROJECTIONS & COMPARISON)
-   Designed by: Group 7 (Walid & Roger)
-   ========================================================================= */
-
-const MESOS_NOMS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-const FACTORS_CO2 = { elec: 0.25, aigua: 0.91, paper: 1.2, neteja: 1.5 };
-const PREU_KWH_BASE = 0.18;
-
-let consumChart = null;
-let projectionYear = 0; // 0 = Actual, 1 = Año 1, 3 = Año 3, etc.
-
 /**
- * Inicialización segura
+ * ITB SUSTAINABLE — js/calculadora.js (Dashboard Redesign)
+ * Phase 3 · Group 7: Walid & Roger
  */
-function inicialitzarCalculadora() {
-    console.log("Initializing simulator with multi-year projection...");
 
-    const idsEscucha = [
-        'baseElec', 'baseAigua', 'baseOficina', 'baseNeteja',
-        'redElec', 'redAigua', 'redPaper', 'redNeteja', 'seasonFilter'
-    ];
+'use strict';
 
-    idsEscucha.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            const evento = el.tagName === 'SELECT' ? 'change' : 'input';
-            el.addEventListener(evento, updateSimulator);
-        }
-    });
+const DATA_PATH = 'assets/dataclean1.json';
 
-    updateSimulator();
+const BASE_DEFAULTS = { elec: 4078.8, water: 119.7, paper: 70.2, clean: 34.7 };
+
+const RAW_PROFILES = {
+    elec:  [1.25, 1.15, 1.05, 0.95, 0.85, 0.75, 0.45, 0.30, 0.95, 1.05, 1.15, 1.10],
+    water: [0.65, 0.65, 0.80, 0.95, 1.10, 1.25, 1.45, 1.40, 1.05, 0.90, 0.80, 1.00],
+    paper: [0.85, 0.90, 0.95, 0.90, 1.00, 1.30, 0.20, 0.10, 1.40, 1.05, 0.95, 0.40],
+    clean: [0.90, 0.90, 0.95, 0.95, 0.95, 1.20, 0.40, 0.25, 1.35, 1.05, 0.95, 1.15]
+};
+
+const SEASONAL = Object.fromEntries(
+    Object.entries(RAW_PROFILES).map(([k, raw]) => {
+        const sum = raw.reduce((a, b) => a + b, 0);
+        return [k, raw.map(v => v / sum * 12)];
+    })
+);
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const SCHOOL_MONTHS = [8, 9, 10, 11, 0, 1, 2, 3, 4, 5];
+
+const CO2 = { elec: 0.2165, water: 0.910, paper: 1.200, clean: 1.500 };
+
+const MEASURES = [
+    { id:'m1', year:1, faIcon:'fa-solid fa-wifi',               title:'IoT Energy Audit',          tooltip:'Smart sensors detect phantom loads and optimise HVAC scheduling across all classrooms and server rooms.',            color:'#3b5bdb', elec:0.04, water:0,    paper:0,    clean:0    },
+    { id:'m2', year:1, faIcon:'fa-solid fa-lightbulb',          title:'LED + Motion Sensors',       tooltip:'High-efficiency LED fixtures and PIR occupancy sensors cut lighting consumption by 9% — ROI under 2 years.',       color:'#e67700', elec:0.09, water:0,    paper:0,    clean:0    },
+    { id:'m3', year:1, faIcon:'fa-solid fa-server',             title:'Smart Server Management',    tooltip:'VM consolidation + Wake-on-LAN scripts reduce physical hosts by 40% with zero impact on teaching quality.',        color:'#7048e8', elec:0.04, water:0,    paper:0,    clean:0    },
+    { id:'m4', year:2, faIcon:'fa-solid fa-solar-panel',        title:'Solar Panel Expansion',      tooltip:'Expanding the rooftop PV array adds ~25 kWp to cover 13% of annual electricity demand (RD 244/2019).',             color:'#f76707', elec:0.13, water:0,    paper:0,    clean:0    },
+    { id:'m5', year:2, faIcon:'fa-solid fa-screwdriver-wrench', title:'Right to Repair Workshop',   tooltip:'ASIX students repair school hardware weekly, extending device life and reducing e-waste and paper admin by 5%.',    color:'#2f9e44', elec:0,    water:0,    paper:0.05, clean:0    },
+    { id:'m6', year:2, faIcon:'fa-solid fa-file-circle-check',  title:'Document Digitalisation',    tooltip:'Full digital-first workflow via Google Workspace eliminates printed exams, minutes and forms. Target: −40% paper.', color:'#495057', elec:0,    water:0,    paper:0.40, clean:0    },
+    { id:'m7', year:3, faIcon:'fa-solid fa-cloud-rain',         title:'Rainwater Harvesting',       tooltip:'8,000 L underground tank collects Barcelona rainfall for irrigation and outdoor cleaning — covers 12% of water.',   color:'#1971c2', elec:0,    water:0.12, paper:0,    clean:0    },
+    { id:'m8', year:3, faIcon:'fa-solid fa-faucet-drip',        title:'High-Efficiency Aerators',   tooltip:'4 L/min aerating inserts on 40+ taps and dual-flush toilets. Payback under 6 months. Saves 18% of mains water.',   color:'#0891b2', elec:0,    water:0.18, paper:0,    clean:0    },
+    { id:'m9', year:3, faIcon:'fa-solid fa-leaf',               title:'Eco-Label Cleaning',         tooltip:'EU Eco-Label concentrates (1:30–1:50) reduce volume purchased by 40% with AENOR-certified compliance.',            color:'#c2185b', elec:0,    water:0,    paper:0,    clean:0.40 }
+];
+
+const active = new Set();
+let chartElec = null, chartWater = null;
+
+function getBase() {
+    const read = (id, def) => { const el = document.getElementById(id); if (!el) return def; const v = parseFloat(el.value); return (isFinite(v) && v >= 0) ? v : def; };
+    return { elec: read('baseElec', BASE_DEFAULTS.elec), water: read('baseWater', BASE_DEFAULTS.water), paper: read('basePaper', BASE_DEFAULTS.paper), clean: read('baseClean', BASE_DEFAULTS.clean) };
 }
 
-/**
- * Nueva función para cambiar el año de la proyección desde los botones
- */
-function setProjection(year) {
-    projectionYear = year;
+function monthlyProfile(b, p) { return p.map(f => +(b * f).toFixed(2)); }
+function sumYear(m) { return +m.reduce((a, b) => a + b, 0).toFixed(1); }
+function sumSchoolYear(m) { return +SCHOOL_MONTHS.reduce((acc, i) => acc + m[i], 0).toFixed(1); }
+function applyReduction(m, f) { return m.map(v => +(v * (1 - f)).toFixed(2)); }
+function calcReductions() {
+    const r = { elec:0, water:0, paper:0, clean:0 };
+    active.forEach(id => { const m = MEASURES.find(x => x.id === id); if (m) { r.elec += m.elec; r.water += m.water; r.paper += m.paper; r.clean += m.clean; } });
+    return r;
+}
+const fmt = (v, d = 0) => parseFloat(v).toLocaleString('en-GB', { maximumFractionDigits: d });
 
-    // Feedback visual opcional en consola o UI
-    console.log(`Cambiando vista a: ${year === 0 ? 'Actual' : 'Año ' + year}`);
-
-    // Actualizamos el título del bloque de resultados si existe
-    const titol = document.getElementById('titol-resultats');
-    if(titol) titol.innerText = year === 0 ? "Current Consumption" : `Forecast for Year ${year}`;
-
-    updateSimulator();
+function compute8(base, red) {
+    return Object.fromEntries(['elec','water','paper','clean'].map(k => {
+        const monthly = monthlyProfile(base[k], SEASONAL[k]);
+        const monthlyPlan = applyReduction(monthly, red[k]);
+        const annual = sumYear(monthly), schoolYear = sumSchoolYear(monthly);
+        const annualPlan = sumYear(monthlyPlan), schoolYearPlan = sumSchoolYear(monthlyPlan);
+        return [k, { monthly, monthlyPlan, annual, schoolYear, annualPlan, schoolYearPlan, savedAnnual: +(annual - annualPlan).toFixed(1), savedSchool: +(schoolYear - schoolYearPlan).toFixed(1), reductPct: +(red[k] * 100).toFixed(0) }];
+    }));
 }
 
-function updateSimulator() {
-    const season = document.getElementById('seasonFilter').value;
-    generarInforme('custom', season);
+const RES_META = {
+    elec:  { color:'#e67700', label:'Electricity', unit:'kWh', icon:'fa-solid fa-bolt' },
+    water: { color:'#1971c2', label:'Water',       unit:'m³',  icon:'fa-solid fa-droplet' },
+    paper: { color:'#495057', label:'Paper',       unit:'kg',  icon:'fa-solid fa-file' },
+    clean: { color:'#c2185b', label:'Cleaning',    unit:'L',   icon:'fa-solid fa-spray-can-sparkles' }
+};
+
+function renderProgress(red) {
+    const pct = Math.min((red.elec * 0.45 + red.water * 0.25 + red.paper * 0.20 + red.clean * 0.10) * 100, 100);
+    const el = document.getElementById('progPct'); if (el) el.textContent = `${pct.toFixed(1)}%`;
+    const bar = document.getElementById('progBar'); if (bar) bar.style.width = `${Math.min(pct / 30 * 100, 100)}%`;
+    const foot = document.getElementById('progFoot'); if (foot) foot.textContent = `${active.size} / 9 active`;
 }
 
-function generarInforme(mode, season = 'all') {
-    // Si se pulsan los botones antiguos, actualizamos el año de proyección
-    if (mode === 'any1') projectionYear = 1;
-    if (mode === 'any3') projectionYear = 3;
-
-    const vBase = {
-        elec: parseFloat(document.getElementById('baseElec').value) || 0,
-        aigua: parseFloat(document.getElementById('baseAigua').value) || 0,
-        paper: parseFloat(document.getElementById('baseOficina').value) || 0,
-        neteja: parseFloat(document.getElementById('baseNeteja').value) || 0
-    };
-
-    // Leemos el % de reducción manual de los sliders
-    let manualRed = {
-        elec: (parseFloat(document.getElementById('redElec')?.value) || 0) / 100,
-        aigua: (parseFloat(document.getElementById('redAigua')?.value) || 0) / 100,
-        paper: (parseFloat(document.getElementById('redPaper')?.value) || 0) / 100,
-        neteja: (parseFloat(document.getElementById('redNeteja')?.value) || 0) / 100
-    };
-
-    const seasonalFactors = [1.2, 1.1, 1.0, 0.5, 1.0, 0.8, 0.3, 0.1, 1.0, 1.1, 1.2, 0.6];
-
-    let indicesMesos = [];
-    switch(season) {
-        case 'winter': indicesMesos = [11, 0, 1]; break;
-        case 'spring': indicesMesos = [2, 3, 4]; break;
-        case 'summer': indicesMesos = [5, 6, 7]; break;
-        case 'autumn': indicesMesos = [8, 9, 10]; break;
-        default: indicesMesos = [0,1,2,3,4,5,6,7,8,9,10,11];
-    }
-
-    let labels = [], dElec = [], dAigua = [], dPaper = [], dNeteja = [], dCost = [];
-    let totalAcumulado = { elec: 0, aigua: 0, paper: 0, neteja: 0 };
-
-    indicesMesos.forEach(i => {
-        const factorS = seasonalFactors[i];
-
-        // LOGICA DE PROYECCIÓN:
-        // Aplicamos la reducción del slider multiplicada por los años proyectados.
-        // Ejemplo: 10% de reducción en el slider -> en Año 3 es un 30% de ahorro.
-        const calcRed = (key) => Math.max(0, 1 - (manualRed[key] * (projectionYear || 1)));
-        // Si projectionYear es 0 (Actual), usamos el valor base (sin reducción del slider)
-        const currentFac = projectionYear === 0 ? 1 : calcRed;
-
-        const e = (vBase.elec * 30) * factorS * (projectionYear === 0 ? 1 : calcRed('elec'));
-        const a = vBase.aigua * factorS * (projectionYear === 0 ? 1 : calcRed('aigua'));
-        const p = vBase.paper * factorS * (projectionYear === 0 ? 1 : calcRed('paper'));
-        const n = vBase.neteja * factorS * (projectionYear === 0 ? 1 : calcRed('neteja'));
-
-        // Inflación del coste del 3% anual según el año proyectado
-        const cost = e * (PREU_KWH_BASE * Math.pow(1.03, projectionYear));
-
-        labels.push(MESOS_NOMS[i]);
-        dElec.push(e.toFixed(0));
-        dAigua.push(a.toFixed(0));
-        dPaper.push(p.toFixed(0));
-        dNeteja.push(n.toFixed(0));
-        dCost.push(cost.toFixed(2));
-
-        totalAcumulado.elec += e;
-        totalAcumulado.aigua += a;
-        totalAcumulado.paper += p;
-        totalAcumulado.neteja += n;
-    });
-
-    dibuixarGrafic(labels, dElec, dAigua, dPaper, dNeteja, dCost);
-    renderCards(totalAcumulado, season);
-}
-
-function dibuixarGrafic(labels, dElec, dAigua, dPaper, dNeteja, dCost) {
-    const canvas = document.getElementById('graficConsum');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (consumChart) consumChart.destroy();
-
-    consumChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                { label: 'Elec (kWh)', data: dElec, borderColor: '#facc15', backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Water (m³)', data: dAigua, borderColor: '#3b82f6', backgroundColor: 'transparent', tension: 0.4, yAxisID: 'y' },
-                { label: 'Paper (kg)', data: dPaper, borderColor: '#94a3b8', borderDash: [5, 5], tension: 0.4, yAxisID: 'y' },
-                { label: 'Cleaning (L)', data: dNeteja, borderColor: '#f472b6', tension: 0.4, yAxisID: 'y' },
-                { label: 'Cost (€)', data: dCost, borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.1)', fill: true, tension: 0.4, yAxisID: 'y1' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { type: 'linear', position: 'left' },
-                y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false } }
-            }
-        }
-    });
-}
-
-function renderCards(res, seasonName) {
-    const container = document.getElementById('grid-resultats');
-    const co2Display = document.getElementById('co2-val');
-    if (!container) return;
-
-    // Título dinámico según el año
-    const yearLabel = projectionYear === 0 ? "CURRENT" : `YEAR ${projectionYear}`;
-    const seasonLabel = seasonName === 'all' ? 'ANNUAL' : 'SEASONAL';
-
-    const co2Total = (res.elec * FACTORS_CO2.elec) + (res.aigua * FACTORS_CO2.aigua);
-    if(co2Display) co2Display.innerHTML = `${(co2Total/1000).toFixed(2)} <span>tons CO2 (${yearLabel})</span>`;
-
-    const items = [
-        { n: 'Electricity', v: res.elec, u: 'kWh', c: '#facc15', img: '⚡' },
-        { n: 'Water', v: res.aigua, u: 'm³', c: '#3b82f6', img: '💧' },
-        { n: 'Paper', v: res.paper, u: 'kg', c: '#94a3b8', img: '📄' },
-        { n: 'Cleaning', v: res.neteja, u: 'L', c: '#f472b6', img: '🧼' }
-    ];
-
-    container.innerHTML = items.map(item => {
-        // Uso escolar estimado
-        const schoolUsage = seasonName === 'all' ? item.v * (10/12) : item.v * 0.90;
-
-        return `
-        <div class="result-card" style="border-bottom-color: ${item.c}; display: flex; align-items: center; gap: 15px;">
-            <div style="font-size: 2.2rem; background: #f8fafc; padding: 12px; border-radius: 12px; min-width: 65px; text-align: center;">
-                ${item.img}
-            </div>
-            <div style="flex-grow: 1;">
-                <h4 style="margin: 0; color: #64748b; font-size: 0.7rem; font-weight: 800;">${yearLabel} ${item.n.toUpperCase()}</h4>
-                <div style="display: flex; gap: 20px; margin-top: 5px;">
-                    <div>
-                        <div style="font-size: 0.55rem; color: #94a3b8; font-weight: bold;">TOTAL</div>
-                        <div style="font-size: 1.3rem; font-weight: 800; color: #1e293b;">
-                            ${Math.round(item.v).toLocaleString()} <small style="font-size: 0.7rem;">${item.u}</small>
-                        </div>
-                    </div>
-                    <div style="border-left: 1px solid #e2e8f0; padding-left: 15px;">
-                        <div style="font-size: 0.55rem; color: #10b981; font-weight: bold;">SCHOOL USE</div>
-                        <div style="font-size: 1.3rem; font-weight: 800; color: #1e293b;">
-                            ${Math.round(schoolUsage).toLocaleString()} <small style="font-size: 0.7rem;">${item.u}</small>
-                        </div>
-                    </div>
+function renderMeasures() {
+    const list = document.getElementById('measuresList');
+    if (!list) return;
+    list.innerHTML = '';
+    MEASURES.forEach(m => {
+        const on = active.has(m.id);
+        const impacts = [m.elec>0?`⚡ −${(m.elec*100).toFixed(0)}%`:null, m.water>0?`💧 −${(m.water*100).toFixed(0)}%`:null, m.paper>0?`📄 −${(m.paper*100).toFixed(0)}%`:null, m.clean>0?`🧼 −${(m.clean*100).toFixed(0)}%`:null].filter(Boolean).join(' · ');
+        const el = document.createElement('div');
+        el.className = `measure-item${on ? ' on' : ''}`;
+        el.style.setProperty('--mc', m.color);
+        el.setAttribute('role', 'switch');
+        el.setAttribute('aria-checked', String(on));
+        el.setAttribute('tabindex', '0');
+        el.innerHTML = `
+            <div class="m-icon"><i class="${m.faIcon}"></i></div>
+            <div class="m-main">
+                <div class="m-title">${m.title}</div>
+                <div class="m-meta">
+                    <span class="m-badge">${impacts}</span>
+                    <span class="year-chip y${m.year}">Y${m.year}</span>
                 </div>
             </div>
-        </div>`;
+            <div class="toggle"></div>
+            <div class="m-tooltip">${m.tooltip}</div>`;
+        const toggle = () => { active.has(m.id) ? active.delete(m.id) : active.add(m.id); updateAll(); };
+        el.onclick = toggle;
+        el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } };
+        list.appendChild(el);
+    });
+}
+
+function renderKPIs(calcs) {
+    const panel = document.getElementById('kpiPanel');
+    if (!panel) return;
+    panel.innerHTML = Object.entries(RES_META).map(([k, m]) => {
+        const d = calcs[k], hp = d.reductPct > 0;
+        return `<div class="kpi-box" style="--kb-color:${m.color}"><div class="kb-period">Full Year</div><div class="kb-val">${fmt(d.annual)} <span class="kb-unit">${m.unit}</span></div>${hp ? `<div class="kb-plan">Plan: ${fmt(d.annualPlan)} · −${fmt(d.savedAnnual)}</div>` : ''}</div>
+        <div class="kpi-box" style="--kb-color:${m.color}"><div class="kb-period">School Year</div><div class="kb-val">${fmt(d.schoolYear)} <span class="kb-unit">${m.unit}</span></div>${hp ? `<div class="kb-plan">Plan: ${fmt(d.schoolYearPlan)} · −${fmt(d.savedSchool)}</div>` : ''}</div>`;
     }).join('');
 }
 
-window.onload = inicialitzarCalculadora;
+function renderResultCards(calcs) {
+    const grid = document.getElementById('resultsGrid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(RES_META).map(([k, m]) => {
+        const d = calcs[k];
+        return `<div class="res-card" style="--rc-color:${m.color}"><div class="rc-lbl"><i class="${m.icon}"></i> ${m.label}</div><div class="rc-val">${fmt(d.annual)} <span class="rc-unit">${m.unit}/yr</span></div><div class="rc-saving${d.reductPct > 0 ? '' : ' zero'}">${d.reductPct > 0 ? `−${d.reductPct}% · Save ${fmt(d.savedAnnual)} ${m.unit}/yr` : 'No reduction active'}</div></div>`;
+    }).join('');
+}
+
+function renderCO2(calcs) {
+    const el = document.getElementById('co2Block');
+    if (!el) return;
+    const co2Base = Object.keys(CO2).reduce((s, k) => s + calcs[k].annual * CO2[k], 0) / 1000;
+    const co2Plan = Object.keys(CO2).reduce((s, k) => s + calcs[k].annualPlan * CO2[k], 0) / 1000;
+    const saving = +(co2Base - co2Plan).toFixed(2);
+    if (saving > 0) {
+        el.style.flexDirection = 'row';
+        el.innerHTML = `<div><div class="co2-lbl">Carbon Footprint / Year</div><div class="co2-val">${co2Plan.toFixed(2)}</div><div class="co2-unit">tonnes CO₂</div></div><div class="co2-right"><div style="font-family:'JetBrains Mono',monospace;font-size:0.52rem;opacity:0.45;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;">Saved vs. baseline</div><div class="co2-saved-num">−${saving.toFixed(2)} t</div><div class="co2-saved-lbl">tonnes CO₂ avoided / year</div></div>`;
+    } else {
+        el.style.flexDirection = 'column'; el.style.textAlign = 'center';
+        el.innerHTML = `<div><div class="co2-val">${co2Base.toFixed(2)} <span style="font-size:1.2rem;opacity:0.6;margin-left:3px;">t</span></div><div class="co2-lbl" style="margin-top:5px;opacity:0.7;">Annual estimated CO₂ emissions</div><div style="font-size:0.78rem;font-weight:600;color:#4ade80;margin-top:0.5rem;">Activate measures above to reduce impact</div></div>`;
+    }
+}
+
+function renderChartBadges(calcs) {
+    const eb = document.getElementById('elecSavingBadge');
+    if (eb) { eb.textContent = calcs.elec.reductPct > 0 ? `−${calcs.elec.reductPct}% saved` : 'No reduction'; }
+    const wb = document.getElementById('waterSavingBadge');
+    if (wb) { wb.textContent = calcs.water.reductPct > 0 ? `−${calcs.water.reductPct}% saved` : 'No reduction'; }
+    const ea = document.getElementById('elecAnnual'); if (ea) ea.textContent = `${fmt(calcs.elec.annual)} kWh`;
+    const ep = document.getElementById('elecPlan');   if (ep) ep.textContent = `${fmt(calcs.elec.annualPlan)} kWh`;
+    const wa = document.getElementById('waterAnnual'); if (wa) wa.textContent = `${fmt(calcs.water.annual)} m³`;
+    const wp = document.getElementById('waterPlan');   if (wp) wp.textContent = `${fmt(calcs.water.annualPlan)} m³`;
+}
+
+const fillBetweenPlugin = {
+    id: 'fillBetween',
+    beforeDatasetsDraw(chart) {
+        const { ctx: c } = chart;
+        const ds0 = chart.getDatasetMeta(0), ds1 = chart.getDatasetMeta(1);
+        if (!ds0.data.length || !ds1.data.length) return;
+        c.save(); c.beginPath();
+        ds0.data.forEach((pt, i) => i === 0 ? c.moveTo(pt.x, pt.y) : c.lineTo(pt.x, pt.y));
+        for (let i = ds1.data.length - 1; i >= 0; i--) c.lineTo(ds1.data[i].x, ds1.data[i].y);
+        c.closePath(); c.fillStyle = 'rgba(74,222,128,0.12)'; c.fill(); c.restore();
+    }
+};
+
+function axisConfig(unit) {
+    return {
+        x: { grid: { color: '#eef1f7' }, ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf' } },
+        y: { beginAtZero: true, grid: { color: '#eef1f7' }, ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf', callback: v => v + ' ' + unit } }
+    };
+}
+
+function tooltipConfig(unit) {
+    return {
+        backgroundColor: '#0d1f4e', titleColor: '#9aacbf', bodyColor: '#e2e8f0', padding: 10, cornerRadius: 8,
+        callbacks: {
+            label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} ${unit}`,
+            afterBody: items => { if (items.length < 2) return []; const diff = +(items[0].parsed.y - items[1].parsed.y).toFixed(unit === 'm³' ? 2 : 1); return diff > 0 ? ['', `  Saved: ${diff} ${unit}`] : []; }
+        }
+    };
+}
+
+function updateChartElec(base, plan) {
+    const canvas = document.getElementById('chartElec'); if (!canvas) return;
+    if (chartElec) { chartElec.data.datasets[0].data = base; chartElec.data.datasets[1].data = plan; chartElec.update('active'); return; }
+    chartElec = new Chart(canvas.getContext('2d'), {
+        type: 'line', plugins: [fillBetweenPlugin],
+        data: { labels: MONTHS, datasets: [
+            { label: 'Baseline',      data: base, borderColor: '#fcc419', borderWidth: 2, borderDash: [5,4], pointRadius: 3, pointBackgroundColor: '#fcc419', tension: 0.4, fill: false },
+            { label: 'With measures', data: plan, borderColor: '#51cf66', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#51cf66', fill: false, tension: 0.4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 300, easing: 'easeInOutQuart' }, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: tooltipConfig('kWh') }, scales: axisConfig('kWh') }
+    });
+}
+
+function updateChartWater(base, plan) {
+    const canvas = document.getElementById('chartWater'); if (!canvas) return;
+    if (chartWater) { chartWater.data.datasets[0].data = base; chartWater.data.datasets[1].data = plan; chartWater.update('active'); return; }
+    chartWater = new Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: { labels: MONTHS, datasets: [
+            { label: 'Baseline',      data: base, backgroundColor: 'rgba(116,192,252,0.5)', borderColor: '#339af0', borderWidth: 1.5, borderRadius: 4 },
+            { label: 'With measures', data: plan, backgroundColor: 'rgba(81,207,102,0.45)',  borderColor: '#51cf66', borderWidth: 1.5, borderRadius: 4 }
+        ]},
+        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 300, easing: 'easeInOutQuart' }, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: tooltipConfig('m³') }, scales: axisConfig('m³') }
+    });
+}
+
+function updateAll() {
+    const base = getBase(), red = calcReductions(), calcs = compute8(base, red);
+    renderProgress(red);
+    renderMeasures();
+    renderKPIs(calcs);
+    renderResultCards(calcs);
+    renderCO2(calcs);
+    renderChartBadges(calcs);
+    updateChartElec(calcs.elec.monthly, calcs.elec.monthlyPlan);
+    updateChartWater(calcs.water.monthly, calcs.water.monthlyPlan);
+}
+
+async function loadJSON() {
+    try { const r = await fetch(DATA_PATH); if (!r.ok) throw new Error(`HTTP ${r.status}`); const data = await r.json(); console.info('[ITB] Data loaded:', data.project); }
+    catch (e) { console.warn('[ITB] Standalone mode:', e.message); }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadJSON();
+    ['baseElec','baseWater','basePaper','baseClean'].forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateAll); });
+    updateAll();
+});
+
+window.ITBCalc = {
+    activateAll: () => { MEASURES.forEach(m => active.add(m.id)); updateAll(); },
+    resetAll:    () => { active.clear(); updateAll(); },
+    getActiveCount: () => active.size
+};
