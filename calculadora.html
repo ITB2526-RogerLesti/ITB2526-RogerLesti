@@ -26,30 +26,27 @@
 
 <div class="page-wrapper">
 
-    <header class="page-header">
-        <div class="eyebrow"><i class="fa-solid fa-bolt-lightning"></i> Phase 3 · Live Impact Simulator</div>
-        <h1>Environmental Impact <span class="h1-accent">Calculator</span></h1>
-        <p>Set your baseline consumption, activate reduction measures and watch both charts update instantly.</p>
-    </header>
-
-    <!-- TOP PROGRESS BAR -->
-    <div class="progress-strip">
-        <div class="ps-left">
-            <span class="ps-label">Reduction achieved</span>
+    <!-- TOP BAR COMPACTO: título + progreso en una sola fila -->
+    <div class="top-bar">
+        <div class="top-bar__left">
+            <div class="eyebrow"><i class="fa-solid fa-bolt-lightning"></i> Phase 3 · Live Simulator</div>
+            <h1 class="top-bar__title">Environmental Impact <span class="h1-accent">Calculator</span></h1>
+        </div>
+        <div class="top-bar__progress">
+            <div class="ps-track-wrap">
+                <div class="ps-track">
+                    <div class="ps-fill" id="progBar"></div>
+                    <div class="ps-target-marker"></div>
+                </div>
+                <div class="ps-track-labels">
+                    <span>0%</span><span style="margin-left:auto">−30% Goal</span>
+                </div>
+            </div>
+        </div>
+        <div class="top-bar__right">
             <span class="ps-pct" id="progPct">0%</span>
-        </div>
-        <div class="ps-track-wrap">
-            <div class="ps-track">
-                <div class="ps-fill" id="progBar"></div>
-                <div class="ps-target-marker" title="−30% target"></div>
-            </div>
-            <div class="ps-track-labels">
-                <span>0%</span>
-                <span style="margin-left:auto">−30% Goal</span>
-            </div>
-        </div>
-        <div class="ps-right">
-            <span id="progFoot">0 / 9 active</span>
+            <span class="ps-label">reduction</span>
+            <span class="ps-count" id="progFoot">0 / 9 active</span>
         </div>
     </div>
 
