@@ -11,7 +11,7 @@ const BASE_DEFAULTS = { elec: 4078.8, water: 119.7, paper: 70.2, clean: 34.7 };
 
 const RAW_PROFILES = {
     //          Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov   Dec
-    elec:  [1.18, 1.22, 1.08, 0.97, 0.88, 0.80, 0.52, 0.28, 0.98, 1.10, 1.20, 1.28],
+    elec:  [1.10, 1.55, 1.20, 0.95, 0.85, 0.90, 0.45, 0.12, 1.05, 1.10, 1.15, 1.55],
     water: [0.62, 0.64, 0.78, 0.93, 1.08, 1.28, 1.48, 1.42, 1.06, 0.88, 0.75, 0.68],
     paper: [0.85, 0.90, 0.95, 0.90, 1.00, 1.30, 0.20, 0.10, 1.40, 1.05, 0.95, 0.40],
     clean: [0.90, 0.90, 0.95, 0.95, 0.95, 1.20, 0.40, 0.25, 1.35, 1.05, 0.95, 1.15]
@@ -19,8 +19,8 @@ const RAW_PROFILES = {
 
 const SEASONAL = Object.fromEntries(
     Object.entries(RAW_PROFILES).map(([k, raw]) => {
-        const sum = raw.reduce((a, b) => a + b, 0);
-        return [k, raw.map(v => v / sum * 12)];
+        const avg = raw.reduce((a, b) => a + b, 0) / raw.length;
+        return [k, raw.map(v => v / avg)];
     })
 );
 
@@ -169,14 +169,21 @@ const fillBetweenPlugin = {
         c.save(); c.beginPath();
         ds0.data.forEach((pt, i) => i === 0 ? c.moveTo(pt.x, pt.y) : c.lineTo(pt.x, pt.y));
         for (let i = ds1.data.length - 1; i >= 0; i--) c.lineTo(ds1.data[i].x, ds1.data[i].y);
-        c.closePath(); c.fillStyle = 'rgba(74,222,128,0.12)'; c.fill(); c.restore();
+        c.closePath(); c.fillStyle = 'rgba(74,222,128,0.15)'; c.fill(); c.restore();
     }
 };
 
 function axisConfig(unit) {
     return {
-        x: { grid: { color: '#eef1f7' }, ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf' } },
-        y: { beginAtZero: true, grid: { color: '#eef1f7' }, ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf', callback: v => v + ' ' + unit } }
+        x: {
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#6b7a99' }
+        },
+        y: {
+            beginAtZero: false,
+            grid: { color: 'rgba(255,255,255,0.06)' },
+            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#6b7a99', callback: v => v + ' ' + unit }
+        }
     };
 }
 
@@ -193,13 +200,56 @@ function tooltipConfig(unit) {
 function updateChartElec(base, plan) {
     const canvas = document.getElementById('chartElec'); if (!canvas) return;
     if (chartElec) { chartElec.data.datasets[0].data = base; chartElec.data.datasets[1].data = plan; chartElec.update('active'); return; }
+
+    // Fondo negro para el gráfico de electricidad
+    const darkBg = {
+        id: 'darkBg',
+        beforeDraw(chart) {
+            const { ctx, chartArea } = chart;
+            if (!chartArea) return;
+            ctx.save();
+            ctx.fillStyle = '#0d1117';
+            ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
+            ctx.restore();
+        }
+    };
+
     chartElec = new Chart(canvas.getContext('2d'), {
-        type: 'line', plugins: [fillBetweenPlugin],
+        type: 'line',
+        plugins: [darkBg, fillBetweenPlugin],
         data: { labels: MONTHS, datasets: [
-            { label: 'Baseline',      data: base, borderColor: '#fcc419', borderWidth: 2, borderDash: [5,4], pointRadius: 3, pointBackgroundColor: '#fcc419', tension: 0.4, fill: false },
-            { label: 'With measures', data: plan, borderColor: '#51cf66', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#51cf66', fill: false, tension: 0.4 }
+            {
+                label: 'Baseline',
+                data: base,
+                borderColor: '#fcc419',
+                borderWidth: 2.5,
+                borderDash: [],
+                pointRadius: 4,
+                pointBackgroundColor: '#fcc419',
+                pointBorderColor: '#fcc419',
+                tension: 0.4,
+                fill: false
+            },
+            {
+                label: 'With measures',
+                data: plan,
+                borderColor: '#51cf66',
+                borderWidth: 2.5,
+                pointRadius: 4,
+                pointBackgroundColor: '#51cf66',
+                pointBorderColor: '#51cf66',
+                fill: false,
+                tension: 0.4
+            }
         ]},
-        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 300, easing: 'easeInOutQuart' }, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: tooltipConfig('kWh') }, scales: axisConfig('kWh') }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300, easing: 'easeInOutQuart' },
+            interaction: { mode: 'index', intersect: false },
+            plugins: { legend: { display: false }, tooltip: tooltipConfig('kWh') },
+            scales: axisConfig('kWh')
+        }
     });
 }
 
