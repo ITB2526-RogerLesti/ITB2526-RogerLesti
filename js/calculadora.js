@@ -41,9 +41,41 @@ const MEASURES = [
     { id:'m9', year:3, faIcon:'fa-solid fa-leaf',               title:'Eco-Label Cleaning',         tooltip:'EU Eco-Label concentrates (1:30–1:50) reduce volume purchased by 40% with AENOR-certified compliance.',            color:'#c2185b', elec:0,    water:0,    paper:0,    clean:0.40 }
 ];
 
+/* ─── STATE ──────────────────────────────────────────────────────── */
 const active = new Set();
 let chartElec = null, chartWater = null;
+let currentYear = 0; // 0 = Now, 1 = Year1, 2 = Year2, 3 = Year3
 
+/* ─── YEAR SELECTOR ──────────────────────────────────────────────── */
+const YEAR_INFO = [
+    'No measures active — baseline consumption',
+    'Year 1 · IoT Audit + LED + Server Management active',
+    'Year 2 · + Solar Panels + Repair Workshop + Digitalisation',
+    'Year 3 · Full plan · All 9 measures active'
+];
+
+window.setYear = function(year) {
+    currentYear = year;
+
+    // Update active buttons
+    document.querySelectorAll('.year-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.year) === year);
+    });
+
+    // Update info text
+    const info = document.getElementById('yearInfo');
+    if (info) info.textContent = YEAR_INFO[year];
+
+    // Activate measures up to selected year
+    active.clear();
+    MEASURES.forEach(m => {
+        if (m.year <= year) active.add(m.id);
+    });
+
+    updateAll();
+};
+
+/* ─── HELPERS ────────────────────────────────────────────────────── */
 function getBase() {
     const read = (id, def) => { const el = document.getElementById(id); if (!el) return def; const v = parseFloat(el.value); return (isFinite(v) && v >= 0) ? v : def; };
     return { elec: read('baseElec', BASE_DEFAULTS.elec), water: read('baseWater', BASE_DEFAULTS.water), paper: read('basePaper', BASE_DEFAULTS.paper), clean: read('baseClean', BASE_DEFAULTS.clean) };
@@ -70,13 +102,15 @@ function compute8(base, red) {
     }));
 }
 
+/* ─── RES META ───────────────────────────────────────────────────── */
 const RES_META = {
     elec:  { color:'#e67700', label:'Electricity', unit:'kWh', icon:'fa-solid fa-bolt' },
-    water: { color:'#1971c2', label:'Water',       unit:'m³',  icon:'fa-solid fa-droplet' },
-    paper: { color:'#495057', label:'Paper',       unit:'kg',  icon:'fa-solid fa-file' },
-    clean: { color:'#c2185b', label:'Cleaning',    unit:'L',   icon:'fa-solid fa-spray-can-sparkles' }
+    water: { color:'#1971c2', label:'Water',        unit:'m³',  icon:'fa-solid fa-droplet' },
+    paper: { color:'#495057', label:'Paper',        unit:'kg',  icon:'fa-solid fa-file' },
+    clean: { color:'#c2185b', label:'Cleaning',     unit:'L',   icon:'fa-solid fa-spray-can-sparkles' }
 };
 
+/* ─── RENDERERS ──────────────────────────────────────────────────── */
 function renderProgress(red) {
     const pct = Math.min((red.elec * 0.45 + red.water * 0.25 + red.paper * 0.20 + red.clean * 0.10) * 100, 100);
     const el = document.getElementById('progPct'); if (el) el.textContent = `${pct.toFixed(1)}%`;
@@ -108,7 +142,15 @@ function renderMeasures() {
             </div>
             <div class="toggle"></div>
             <div class="m-tooltip">${m.tooltip}</div>`;
-        const toggle = () => { active.has(m.id) ? active.delete(m.id) : active.add(m.id); updateAll(); };
+        const toggle = () => {
+            active.has(m.id) ? active.delete(m.id) : active.add(m.id);
+            // Reset year selector to manual mode when toggling individually
+            currentYear = -1;
+            document.querySelectorAll('.year-btn').forEach(btn => btn.classList.remove('active'));
+            const info = document.getElementById('yearInfo');
+            if (info) info.textContent = `${active.size} measure${active.size !== 1 ? 's' : ''} manually selected`;
+            updateAll();
+        };
         el.onclick = toggle;
         el.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } };
         list.appendChild(el);
@@ -160,6 +202,21 @@ function renderChartBadges(calcs) {
     const wp = document.getElementById('waterPlan');   if (wp) wp.textContent = `${fmt(calcs.water.annualPlan)} m³`;
 }
 
+/* ─── CHART PLUGINS ──────────────────────────────────────────────── */
+
+// Plugin para fondo BLANCO en el área del gráfico
+const whiteBgPlugin = {
+    id: 'whiteBg',
+    beforeDraw(chart) {
+        const { ctx, chartArea } = chart;
+        if (!chartArea) return;
+        ctx.save();
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
+        ctx.restore();
+    }
+};
+
 const fillBetweenPlugin = {
     id: 'fillBetween',
     beforeDatasetsDraw(chart) {
@@ -176,13 +233,13 @@ const fillBetweenPlugin = {
 function axisConfig(unit) {
     return {
         x: {
-            grid: { color: 'rgba(255,255,255,0.06)' },
-            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#6b7a99' }
+            grid: { color: '#eef1f7' },
+            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf' }
         },
         y: {
             beginAtZero: false,
-            grid: { color: 'rgba(255,255,255,0.06)' },
-            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#6b7a99', callback: v => v + ' ' + unit }
+            grid: { color: '#eef1f7' },
+            ticks: { font: { size: 10, family: "'JetBrains Mono', monospace" }, color: '#9aacbf', callback: v => v + ' ' + unit }
         }
     };
 }
@@ -199,48 +256,18 @@ function tooltipConfig(unit) {
 
 function updateChartElec(base, plan) {
     const canvas = document.getElementById('chartElec'); if (!canvas) return;
-    if (chartElec) { chartElec.data.datasets[0].data = base; chartElec.data.datasets[1].data = plan; chartElec.update('active'); return; }
-
-    // Fondo negro para el gráfico de electricidad
-    const darkBg = {
-        id: 'darkBg',
-        beforeDraw(chart) {
-            const { ctx, chartArea } = chart;
-            if (!chartArea) return;
-            ctx.save();
-            ctx.fillStyle = '#0d1117';
-            ctx.fillRect(chartArea.left, chartArea.top, chartArea.width, chartArea.height);
-            ctx.restore();
-        }
-    };
-
+    if (chartElec) {
+        chartElec.data.datasets[0].data = base;
+        chartElec.data.datasets[1].data = plan;
+        chartElec.update('active');
+        return;
+    }
     chartElec = new Chart(canvas.getContext('2d'), {
         type: 'line',
-        plugins: [darkBg, fillBetweenPlugin],
+        plugins: [whiteBgPlugin, fillBetweenPlugin],
         data: { labels: MONTHS, datasets: [
-            {
-                label: 'Baseline',
-                data: base,
-                borderColor: '#fcc419',
-                borderWidth: 2.5,
-                borderDash: [],
-                pointRadius: 4,
-                pointBackgroundColor: '#fcc419',
-                pointBorderColor: '#fcc419',
-                tension: 0.4,
-                fill: false
-            },
-            {
-                label: 'With measures',
-                data: plan,
-                borderColor: '#51cf66',
-                borderWidth: 2.5,
-                pointRadius: 4,
-                pointBackgroundColor: '#51cf66',
-                pointBorderColor: '#51cf66',
-                fill: false,
-                tension: 0.4
-            }
+            { label: 'Baseline',      data: base, borderColor: '#fcc419', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#fcc419', pointBorderColor: '#fcc419', tension: 0.4, fill: false },
+            { label: 'With measures', data: plan, borderColor: '#51cf66', borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: '#51cf66', pointBorderColor: '#51cf66', fill: false, tension: 0.4 }
         ]},
         options: {
             responsive: true,
@@ -255,17 +282,30 @@ function updateChartElec(base, plan) {
 
 function updateChartWater(base, plan) {
     const canvas = document.getElementById('chartWater'); if (!canvas) return;
-    if (chartWater) { chartWater.data.datasets[0].data = base; chartWater.data.datasets[1].data = plan; chartWater.update('active'); return; }
+    if (chartWater) {
+        chartWater.data.datasets[0].data = base;
+        chartWater.data.datasets[1].data = plan;
+        chartWater.update('active');
+        return;
+    }
     chartWater = new Chart(canvas.getContext('2d'), {
         type: 'bar',
         data: { labels: MONTHS, datasets: [
             { label: 'Baseline',      data: base, backgroundColor: 'rgba(116,192,252,0.5)', borderColor: '#339af0', borderWidth: 1.5, borderRadius: 4 },
             { label: 'With measures', data: plan, backgroundColor: 'rgba(81,207,102,0.45)',  borderColor: '#51cf66', borderWidth: 1.5, borderRadius: 4 }
         ]},
-        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 300, easing: 'easeInOutQuart' }, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false }, tooltip: tooltipConfig('m³') }, scales: axisConfig('m³') }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 300, easing: 'easeInOutQuart' },
+            interaction: { mode: 'index', intersect: false },
+            plugins: { legend: { display: false }, tooltip: tooltipConfig('m³') },
+            scales: axisConfig('m³')
+        }
     });
 }
 
+/* ─── MASTER UPDATE ──────────────────────────────────────────────── */
 function updateAll() {
     const base = getBase(), red = calcReductions(), calcs = compute8(base, red);
     renderProgress(red);

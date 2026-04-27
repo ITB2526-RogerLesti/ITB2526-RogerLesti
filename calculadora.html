@@ -26,7 +26,7 @@
 
 <div class="page-wrapper">
 
-    <!-- TOP BAR COMPACTO: título + progreso en una sola fila -->
+    <!-- TOP BAR -->
     <div class="top-bar">
         <div class="top-bar__left">
             <div class="eyebrow"><i class="fa-solid fa-bolt-lightning"></i> Phase 3 · Live Simulator</div>
@@ -47,6 +47,34 @@
             <span class="ps-pct" id="progPct">0%</span>
             <span class="ps-label">reduction</span>
             <span class="ps-count" id="progFoot">0 / 9 active</span>
+        </div>
+    </div>
+
+    <!-- YEAR SELECTOR -->
+    <div class="year-selector">
+        <div class="year-selector__label">
+            <i class="fa-solid fa-calendar-days"></i> Simulation Year
+        </div>
+        <div class="year-selector__btns">
+            <button class="year-btn active" data-year="0" onclick="setYear(0)">
+                <span class="year-btn__num">Now</span>
+                <span class="year-btn__sub">Baseline</span>
+            </button>
+            <button class="year-btn" data-year="1" onclick="setYear(1)">
+                <span class="year-btn__num">Year 1</span>
+                <span class="year-btn__sub">2026 · Efficiency</span>
+            </button>
+            <button class="year-btn" data-year="2" onclick="setYear(2)">
+                <span class="year-btn__num">Year 2</span>
+                <span class="year-btn__sub">2027 · Circularity</span>
+            </button>
+            <button class="year-btn" data-year="3" onclick="setYear(3)">
+                <span class="year-btn__num">Year 3</span>
+                <span class="year-btn__sub">2028 · Independence</span>
+            </button>
+        </div>
+        <div class="year-selector__info" id="yearInfo">
+            No measures active — baseline consumption
         </div>
     </div>
 
@@ -80,34 +108,43 @@
                 </div>
             </div>
 
+            <!-- INPUTS con iconos en color -->
             <div class="inputs-card">
                 <div class="inputs-card__label">
                     <i class="fa-solid fa-sliders"></i> Baseline Consumption
                 </div>
                 <div class="inputs-grid">
                     <div class="inp-group">
-                        <label for="baseElec"><i class="fa-solid fa-bolt"></i> Electricity</label>
+                        <label for="baseElec" class="inp-label inp-label--elec">
+                            <i class="fa-solid fa-bolt"></i> ELECTRICITY
+                        </label>
                         <div class="inp-wrap">
                             <input type="number" step="0.1" id="baseElec" value="4078.8" min="0">
                             <span class="inp-unit">kWh/mo</span>
                         </div>
                     </div>
                     <div class="inp-group">
-                        <label for="baseWater"><i class="fa-solid fa-droplet"></i> Water</label>
+                        <label for="baseWater" class="inp-label inp-label--water">
+                            <i class="fa-solid fa-droplet"></i> WATER
+                        </label>
                         <div class="inp-wrap">
                             <input type="number" step="0.1" id="baseWater" value="119.7" min="0">
                             <span class="inp-unit">m³/mo</span>
                         </div>
                     </div>
                     <div class="inp-group">
-                        <label for="basePaper"><i class="fa-solid fa-file"></i> Paper</label>
+                        <label for="basePaper" class="inp-label inp-label--paper">
+                            <i class="fa-solid fa-file"></i> PAPER
+                        </label>
                         <div class="inp-wrap">
                             <input type="number" step="0.1" id="basePaper" value="70.2" min="0">
                             <span class="inp-unit">kg/mo</span>
                         </div>
                     </div>
                     <div class="inp-group">
-                        <label for="baseClean"><i class="fa-solid fa-spray-can-sparkles"></i> Cleaning</label>
+                        <label for="baseClean" class="inp-label inp-label--clean">
+                            <i class="fa-solid fa-spray-can-sparkles"></i> CLEANING
+                        </label>
                         <div class="inp-wrap">
                             <input type="number" step="0.1" id="baseClean" value="34.7" min="0">
                             <span class="inp-unit">L/mo</span>
